@@ -18,6 +18,8 @@ import {
   CardBody,
   CardHeader,
 } from 'reactstrap';
+import {ProSidebar, Menu, MenuItem, SubMenu} from 'react-pro-sidebar';
+
 import {NavLink} from 'react-router-dom';
 
 class Header extends Component {
@@ -81,7 +83,7 @@ class Header extends Component {
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink className="nav-link" to="/menu">
+                  <NavLink className="nav-link" to="/Schedule">
                     <span className="fa fa-list fa-lg" /> Menu
                   </NavLink>
                 </NavItem>
@@ -102,24 +104,7 @@ class Header extends Component {
             </Collapse>
           </div>
         </Navbar>
-        <Jumbotron>
-          <div className="container">
-            <div className="row row-header">
-              <div className="col-12 col-md-6">
-                <h1>
-                  Dunder Mifflin Paper Company
-                </h1>
-                <p>
-                  "To avoid illness, expose yourself to germs, enabling your immune system to develop antibodies. I don't know why everyone doesn't do this... Maybe they have something against living forever."
-
-                </p>
-              </div>
-              <div className="col-12 col-md-6">
-                <Media src="assets/Character_-_MichaelScott.PNG.png" />
-              </div>
-            </div>
-          </div>
-        </Jumbotron>
+        
         <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
           <Card>
             <CardHeader toggle={this.toggleModal} className="text-center">
@@ -164,7 +149,7 @@ class Header extends Component {
                 </div>
               </Form>
             </CardBody>
-          </Card>
+          </Card> 
         </Modal>
       </React.Fragment>
     );

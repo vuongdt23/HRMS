@@ -5,7 +5,9 @@ import {getDay} from 'date-fns';
 
 const modifiers = {
   disabled: date => getDay (date) === 6, // Disables Saturdays
-  highlight: date => getDay (date) === 2, // Highlights Tuesdays
+  highlight: date => {
+    return getDay (date) === 2;
+  }, // Highlights Tuesdays
 };
 const modifiersClassNames = {
   highlight: '-highlight',
