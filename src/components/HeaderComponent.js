@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useContext} from 'react';
 import {
   Nav,
   Navbar,
@@ -19,10 +19,14 @@ import {
   CardHeader,
 } from 'reactstrap';
 import {ProSidebar, Menu, MenuItem, SubMenu} from 'react-pro-sidebar';
-
+import Axios from 'axios';
 import {NavLink} from 'react-router-dom';
+import userContext from '../context/usercontext';
+import axios from 'axios';
 
 class Header extends Component {
+  static contextType = userContext;
+  
   constructor (props) {
     super (props);
     this.state = {
@@ -45,18 +49,33 @@ class Header extends Component {
   }
 
   handleLogin (event) {
-    this.toggleModal ();
-    alert (
-      'Username: ' +
-        this.username.value +
-        ' Password: ' +
-        this.password.value +
-        ' Remember: ' +
-        this.remember.checked
-    );
+    const { user, setUser } = this.context;
+    axios
+      .post ('http://localhost:3000/users/login', {
+        username: this.username.value,
+        password: this.password.value,
+      })
+      .then (res => {
+        if(res.token)
+        {
+        console.log (res.data);
+        const newuser = {
+          token: res.data.token,
+          id: res.data.id,
+        };
+        console.log('aaaaaaa', this.context);
+        setUser (newuser);
+        console.log('New Context', this.context);
+      }
+      else{
+        console.log('login failed');
+      }
+      });
     event.preventDefault ();
   }
   render () {
+    
+
     return (
       <React.Fragment>
         <Navbar dark expand="md">
@@ -104,7 +123,7 @@ class Header extends Component {
             </Collapse>
           </div>
         </Navbar>
-        
+
         <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
           <Card>
             <CardHeader toggle={this.toggleModal} className="text-center">
@@ -149,7 +168,7 @@ class Header extends Component {
                 </div>
               </Form>
             </CardBody>
-          </Card> 
+          </Card>
         </Modal>
       </React.Fragment>
     );

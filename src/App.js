@@ -2,12 +2,12 @@ import logo from './logo.svg';
 import './App.css';
 import Main from './components/MainComponent';
 import {BrowserRouter} from 'react-router-dom';
-
-function App() {
+import EmployeesView from './components/EmployeesViewComponent';
+function App () {
   return (
     <div className="App">
       <BrowserRouter>
-      <Main/>
+       <Main/>
       </BrowserRouter>
     </div>
   );
