@@ -17,6 +17,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Alert,
 } from 'reactstrap';
 import {ProSidebar, Menu, MenuItem, SubMenu} from 'react-pro-sidebar';
 import Axios from 'axios';
@@ -26,16 +27,26 @@ import axios from 'axios';
 
 class Header extends Component {
   static contextType = userContext;
-  
+
   constructor (props) {
     super (props);
     this.state = {
       isNavOpen: false,
       isModalOpen: false,
+      isErrorShown: false,
     };
     this.toggleNav = this.toggleNav.bind (this);
     this.toggleModal = this.toggleModal.bind (this);
     this.handleLogin = this.handleLogin.bind (this);
+    this.ShowError = this.ShowError.bind (this);
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+  handleLogout(){
+    const {user, setUser} = this.context;
+    const newuser = {
+      isLoggedin : false
+    };
+    setUser (newuser);
   }
   toggleNav () {
     this.setState ({
@@ -47,35 +58,40 @@ class Header extends Component {
       isModalOpen: !this.state.isModalOpen,
     });
   }
+  ShowError () {
+    this.setState ({
+      isErrorShown: !this.state.isErrorShown,
+    });
+  }
 
   handleLogin (event) {
-    const { user, setUser } = this.context;
+    const {user, setUser} = this.context;
+    console.log ('oldcontext', this.context.user);
     axios
       .post ('http://localhost:3000/users/login', {
         username: this.username.value,
         password: this.password.value,
       })
       .then (res => {
-        if(res.token)
-        {
         console.log (res.data);
         const newuser = {
           token: res.data.token,
           id: res.data.id,
+          isLoggedin : true
         };
-        console.log('aaaaaaa', this.context);
+        
         setUser (newuser);
-        console.log('New Context', this.context);
-      }
-      else{
-        console.log('login failed');
-      }
+        console.log ('New Context', this.context);
+        console.log(this.context);
+        this.toggleModal();
+      })
+      .catch (err => {
+        this.ShowError ();
+        console.log ('login failed');
       });
     event.preventDefault ();
   }
   render () {
-    
-
     return (
       <React.Fragment>
         <Navbar dark expand="md">
@@ -114,11 +130,13 @@ class Header extends Component {
               </Nav>
               <Nav className="ml-auto" navbar>
                 <NavItem>
-                  <Button color="primary" onClick={this.toggleModal}>
-                    LOGIN
-
-                  </Button>
+                  {this.context.user.isLoggedin
+                    ? <Button onClick={this.handleLogout} color="danger"> LOGOUT </Button>
+                    : <Button color="primary" onClick={this.toggleModal}>
+                        {' '}LOGIN{' '}
+                      </Button>}
                 </NavItem>
+
               </Nav>
             </Collapse>
           </div>
@@ -169,6 +187,13 @@ class Header extends Component {
               </Form>
             </CardBody>
           </Card>
+          <Alert
+            color="danger"
+            isOpen={this.state.isErrorShown}
+            toggle={this.ShowError}
+          >
+            Login Failed
+          </Alert>
         </Modal>
       </React.Fragment>
     );

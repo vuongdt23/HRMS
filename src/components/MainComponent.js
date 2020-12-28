@@ -11,11 +11,12 @@ import userContext from '../context/usercontext';
 class Main extends Component {
   constructor (props) {
     super (props);
-    this.state = {};
+    this.state = {
+      user: {
+        isLoggedin: false,
+      },
+    };
   }
-  state = {
-    user: {},
-  };
 
   setUser = user => {
     this.setState (prevState => ({user}));
