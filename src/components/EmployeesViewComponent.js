@@ -37,15 +37,9 @@ function EmployeesView (props) {
   const [employees, setEmployees] = useState (Array);
   const [isLoaded, setIsLoaded] = useState (false);
   const [isEditModalOpen, setisEditModalOpen] = useState (true);
-  const [isAddModalOpen, setisAddModalOpen] = useState (true);
+  const [isAddModalOpen, setisAddModalOpen] = useState (false);
   const [selectedEmployeeIndex, setSelectedEmployeeIndex] = useState (0);
-  const [newEmployee, setnewEmployee] = useState ({
-    name: '',
-    email: '',
-    address: '',
-    phone: '',
-    descr: '',
-  });
+  const [email, setEmail] = useState (null);
   console.log ('user', user.user);
   const toggleEditModal = () => {
     setisEditModalOpen (!isEditModalOpen);
@@ -60,7 +54,9 @@ function EmployeesView (props) {
       },
     });
     setIsLoaded (false);
-    console.log (newEmployee.email);
+  };
+  const onFormClose = () => {
+    setisEditModalOpen (false);
   };
 
   if (!user.user.isLoggedin) {
@@ -89,6 +85,7 @@ function EmployeesView (props) {
     }
     return (
       <div>
+        <Button color="primary" onClick={toggleAddModal}> Add </Button>
         <Table striped condensed hover>
           <thead>
             <tr>
@@ -104,8 +101,10 @@ function EmployeesView (props) {
           <div />
         </Table>
 
-        <Modal id="addmodal" isOpen={isAddModalOpen}>
-          <EmployeeForm/>
+        <Modal size="lg" id="addmodal" isOpen={isAddModalOpen}>
+          <div>
+            <EmployeeForm onFormClose={onFormClose}/>
+          </div>
         </Modal>
 
       </div>

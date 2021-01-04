@@ -11,23 +11,13 @@ class EmployeeForm extends Component {
     roleData: [],
     positionData: [],
     departmentData: [],
+    name:'',
+    email:'',
+   
+
   };
 
-  loadRoleInfo = () => {
-    const {user, setUser} = this.context;
-    axios
-      .get ('https://employee-management-fk-api.herokuapp.com/api/role', {
-        headers: {
-          authorization: localStorage.getItem ('token') || '',
-        },
-      })
-      .then (response => {
-        this.setState ({roleData: response.data});
-      })
-      .catch (error => {
-        console.log (error);
-      });
-  };
+ 
   loadPositionInfo = () => {
     const {user, setUser} = this.context;
     axios
@@ -59,46 +49,18 @@ class EmployeeForm extends Component {
       });
   };
   componentWillMount () {
-    this.loadRoleInfo ();
     this.loadPositionInfo ();
     this.loadDepartmentInfo ();
   }
 
   render () {
     return (
-      <div>
+      <div className="container">
         <h2 id="role-form-title">Add Employee Details</h2>
         <div id="role-form-outer-div">
           <Form id="form" onSubmit={this.props.onEmployeeSubmit}>
-            <Form.Group as={Row}>
-              <Form.Label column sm={2}>
-                Username
-              </Form.Label>
-              <Col sm={10} className="form-input">
-                <Form.Control type="text" placeholder="Username" required />
-              </Col>
-            </Form.Group>
-
-            <Form.Group as={Row}>
-              <Form.Label column sm={2}>
-                Password
-              </Form.Label>
-              <Col sm={10} className="form-input">
-                <Form.Control type="password" placeholder="Password" required />
-              </Col>
-            </Form.Group>
-
-            <Form.Group as={Row}>
-              <Form.Label column sm={2}>
-                Account access
-              </Form.Label>
-              <Col sm={10} className="form-input">
-                <Form.Control as="select" required>
-                  <option value="2">HR</option>
-                  <option value="3">Employee</option>
-                </Form.Control>
-              </Col>
-            </Form.Group>
+           
+           
             <Form.Group as={Row}>
               <Form.Label column sm={2}>
                 Employee Name
@@ -108,6 +70,7 @@ class EmployeeForm extends Component {
                   type="text"
                   placeholder="Employee Name"
                   required
+                  
                 />
               </Col>
             </Form.Group>
@@ -120,17 +83,24 @@ class EmployeeForm extends Component {
                   type="text"
                   placeholder="Employee Address"
                   required
+                  
                 />
               </Col>
             </Form.Group>
             <Form.Group as={Row}>
               <Form.Label column sm={2}>
-                DOB
+                Employee Email
               </Form.Label>
               <Col sm={10} className="form-input">
-                <Form.Control type="date" placeholder="DOB" required />
+                <Form.Control
+                  type="email"
+                  placeholder="Employee Email"
+                  required
+                  
+                />
               </Col>
             </Form.Group>
+           
             <Form.Group as={Row}>
               <Form.Label column sm={2}>
                 Phone Number
@@ -177,16 +147,17 @@ class EmployeeForm extends Component {
             </Form.Group>
 
             <Form.Group as={Row} id="form-submit-button">
-              <Col sm={{span: 10, offset: 2}}>
+              <Col sm={{span: 6, offset: 0}}>
                 <Button type="submit">Submit</Button>
               </Col>
-            </Form.Group>
-            <Form.Group as={Row} id="form-cancel-button">
-              <Col sm={{span: 10, offset: 2}} id="form-cancel-button-inner">
+              <Col sm={{span: 4, offset: 2}} id="form-cancel-button-inner">
                 <Button type="reset" onClick={this.props.onFormClose}>
                   cancel
                 </Button>
               </Col>
+            </Form.Group>
+            <Form.Group as={Row} id="form-cancel-button">
+             
             </Form.Group>
           </Form>
         </div>

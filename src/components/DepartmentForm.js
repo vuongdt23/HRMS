@@ -1,46 +1,18 @@
-import React, { Component } from "react";
+import React, {Component} from 'react';
 // import { Form,Button } from "react-bootstrap";
-import { Form, Button, Col, Row } from "react-bootstrap";
-import axios from "axios";
+import {Form, Button, Col, Row} from 'react-bootstrap';
+import axios from 'axios';
 
 class DepartmentForm extends Component {
-  state = {
-    companyInfo: []
-  };
-  companyData = [];
-  loadCompanyInfo = () => {
-    axios
-      .get("https://employee-management-fk-api.herokuapp.com/api/company", {
-        headers: {
-          authorization: localStorage.getItem("token") || ""
-        }
-      })
-      .then(response => {
-        // if(response.data.length==0){this.roleObj=["temp"];}
-        // else{
-
-        // }
-        this.companyData = response.data;
-
-        // this.portalsData=this.portalsData.filter((data)=>data["Status"]==1);
-
-        this.setState({ companyInfo: response.data });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-  componentWillMount() {
-    this.loadCompanyInfo();
-  }
-  render() {
+  state = {};
+  render () {
     return (
       <div>
         <h2 id="role-form-title">Add Department Details</h2>
 
         <div id="role-form-outer-div">
           <Form id="form" onSubmit={this.props.onDepartmentSubmit}>
-          <Form.Group as={Row}>
+            <Form.Group as={Row}>
               <Form.Label column sm={2}>
                 Department
               </Form.Label>
@@ -49,6 +21,9 @@ class DepartmentForm extends Component {
                   type="Text"
                   placeholder="Department"
                   name="Department"
+                  onChange={e => {
+                    this.props.HandleDepartmentNameChange (e.target.value);
+                  }}
                   required
                 />
               </Col>
@@ -69,12 +44,12 @@ class DepartmentForm extends Component {
             </Form.Group>
 
             <Form.Group as={Row} id="form-submit-button">
-              <Col sm={{ span: 10, offset: 2 }}>
+              <Col sm={{span: 10, offset: 2}}>
                 <Button type="submit">Submit</Button>
               </Col>
             </Form.Group>
             <Form.Group as={Row} id="form-cancel-button">
-              <Col sm={{ span: 10, offset: 2 }} id="form-cancel-button-inner">
+              <Col sm={{span: 10, offset: 2}} id="form-cancel-button-inner">
                 <Button type="reset" onClick={this.props.onFormClose}>
                   cancel
                 </Button>
