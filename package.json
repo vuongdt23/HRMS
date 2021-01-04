@@ -15,6 +15,7 @@
     "date-fns": "^2.16.1",
     "jquery": "^3.5.1",
     "react": "^17.0.1",
+    "react-bootstrap": "^1.4.0",
     "react-context": "0.0.3",
     "react-dom": "^17.0.1",
     "react-nice-dates": "^3.0.7",

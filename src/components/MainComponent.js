@@ -4,6 +4,9 @@ import Footer from './FooterComponent';
 import Apply from './ApplyComponent';
 import Schedule from './ScheduleComponent';
 import Sidebar from './SidebarComponent';
+import EmployeesView from './EmployeesViewComponent';
+import EmployeeList from './EmployeeListComponent';
+
 import '../App.css';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import Home from './HomeComponent';
@@ -31,7 +34,18 @@ class Main extends Component {
       return <Apply />;
     };
     const SchedulePage = () => {
-      return <Schedule />;
+      return (
+        <userContext.Provider value={{user, setUser}}>
+          <Schedule />;
+        </userContext.Provider>
+      );
+    };
+    const EmployeesViewPage = () => {
+      return (
+        <userContext.Provider value={{user, setUser}}>
+          <EmployeeList />
+        </userContext.Provider>
+      );
     };
     return (
       <div>
@@ -48,6 +62,7 @@ class Main extends Component {
               <Route path="/home" component={HomePage} />
               <Route path="/Apply" component={ApplyPage} />
               <Route path="/Schedule" component={SchedulePage} />
+              <Route path="/Employees" component={EmployeesViewPage}/>
               <Redirect to="/home" />
             </Switch>
 

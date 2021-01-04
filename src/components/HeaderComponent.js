@@ -6,10 +6,8 @@ import {
   NavbarToggler,
   Collapse,
   NavItem,
-  Jumbotron,
   Button,
   Modal,
-  Media,
   Form,
   FormGroup,
   Label,
@@ -19,9 +17,7 @@ import {
   CardHeader,
   Alert,
 } from 'reactstrap';
-import {ProSidebar, Menu, MenuItem, SubMenu} from 'react-pro-sidebar';
-import Axios from 'axios';
-import {NavLink} from 'react-router-dom';
+import {NavLink, Link} from 'react-router-dom';
 import userContext from '../context/usercontext';
 import axios from 'axios';
 
@@ -39,12 +35,12 @@ class Header extends Component {
     this.toggleModal = this.toggleModal.bind (this);
     this.handleLogin = this.handleLogin.bind (this);
     this.ShowError = this.ShowError.bind (this);
-    this.handleLogout = this.handleLogout.bind(this);
+    this.handleLogout = this.handleLogout.bind (this);
   }
-  handleLogout(){
+  handleLogout () {
     const {user, setUser} = this.context;
     const newuser = {
-      isLoggedin : false
+      isLoggedin: false,
     };
     setUser (newuser);
   }
@@ -77,13 +73,13 @@ class Header extends Component {
         const newuser = {
           token: res.data.token,
           id: res.data.id,
-          isLoggedin : true
+          isLoggedin: true,
         };
-        
+
         setUser (newuser);
         console.log ('New Context', this.context);
-        console.log(this.context);
-        this.toggleModal();
+        console.log (this.context);
+        this.toggleModal ();
       })
       .catch (err => {
         this.ShowError ();
@@ -123,7 +119,7 @@ class Header extends Component {
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink className="nav-link" to="/contactus">
+                  <NavLink className="nav-link" to="/Employees">
                     <span className="fa fa-address-card fa-lg" /> Contact Us
                   </NavLink>
                 </NavItem>
@@ -131,7 +127,14 @@ class Header extends Component {
               <Nav className="ml-auto" navbar>
                 <NavItem>
                   {this.context.user.isLoggedin
-                    ? <Button onClick={this.handleLogout} color="danger"> LOGOUT </Button>
+                    ? <Button onClick={this.handleLogout} color="danger">
+                        <Link
+                          to="/home"
+                          style={{textDecoration: 'none', color: 'white'}}
+                        >
+                          LOGOUT
+                        </Link>
+                      </Button>
                     : <Button color="primary" onClick={this.toggleModal}>
                         {' '}LOGIN{' '}
                       </Button>}
