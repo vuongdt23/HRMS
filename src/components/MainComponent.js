@@ -54,12 +54,12 @@ class Main extends Component {
         <userContext.Provider value={{user, setUser}}>
           <EmployeeList />
         </userContext.Provider>
-      );
+      );  
     };
-    const EmployeesAddPage = () => {
+    const DepartmentsPage = () => {
       return (
         <userContext.Provider value={{user, setUser}}>
-          <EmployeeForm />
+         <DepartmentView/>
         </userContext.Provider>
       );
     };
@@ -79,7 +79,7 @@ class Main extends Component {
               <Route path="/Apply" component={ApplyPage} />
               <Route path="/Schedule" component={SchedulePage} />
               <Route path="/Employees" component={EmployeesViewPage}/>
-              <Route path="/AddEmployee" component={EmployeesAddPage}/>
+              <Route path="/Departments" component={DepartmentsPage}/>
               <Redirect to="/home" />
             </Switch>
 

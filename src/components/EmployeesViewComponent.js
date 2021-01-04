@@ -44,6 +44,20 @@ function EmployeesView (props) {
   const toggleEditModal = () => {
     setisEditModalOpen (!isEditModalOpen);
   };
+  function renderPerson (employee, index) {
+    return (
+      <tr key={index}>
+        <td>{employee.name}</td>
+        <td>{employee.address}</td>
+        <td>{employee.phone}</td>
+        <td>{employee.email}</td>
+        <Button id={index} onClick={e => handleEditButtonClick (e)}>
+          {' '}Edit{' '}
+        </Button>
+        <Button> Delete </Button>
+      </tr>
+    );
+  }
   const toggleAddModal = () => {
     setisAddModalOpen (!isAddModalOpen);
   };
@@ -103,7 +117,8 @@ function EmployeesView (props) {
 
         <Modal size="lg" id="addmodal" isOpen={isAddModalOpen}>
           <div>
-            <EmployeeForm onFormClose={onFormClose}/>
+            <EmployeeForm onFormClose={onFormClose} />
+
           </div>
         </Modal>
 

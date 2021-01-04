@@ -21,9 +21,9 @@ class DepartmentForm extends Component {
                   type="Text"
                   placeholder="Department"
                   name="Department"
-                  onChange={e => {
-                    this.props.HandleDepartmentNameChange (e.target.value);
-                  }}
+                 // onChange={e => {
+                //    this.props.HandleDepartmentNameChange (e.target.value);
+                 // }}
                   required
                 />
               </Col>
@@ -31,7 +31,7 @@ class DepartmentForm extends Component {
 
             <Form.Group as={Row}>
               <Form.Label column sm={2}>
-                Department
+                Department Description
               </Form.Label>
               <Col sm={10} className="form-input">
                 <Form.Control

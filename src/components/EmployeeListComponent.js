@@ -5,7 +5,8 @@ import {Table, tr, td, Button, Modal} from 'reactstrap';
 import EmployeeForm from './EmployeeForm';
 import DepartmentForm from './DepartmentForm';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import 'https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/4.3.1/react-bootstrap-table-all.min.css'
+import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+
 class EmployeeList extends Component {
   constructor (props) {
     super (props);
@@ -23,20 +24,9 @@ class EmployeeList extends Component {
   }
   handleEditButtonClick (event) {
     this.setState ({editUserIndex: event.target.id});
+    console.log (JSON.stringify (this.state.editUserIndex));
   }
-  renderPerson (employee, index) {
-    return (
-      <tr key={index}>
-        <td>{employee.name}</td>
-        <td>{employee.address}</td>
-        <td>{employee.phone}</td>
-        <td>{employee.email}</td>
-        <Button id={index} onClick={e => this.handleEditButtonClick (e)}>
-          {' '}Edit{' '}
-        </Button>
-      </tr>
-    );
-  }
+
   toggleAddModal () {
     this.setState ({
       isAddModalOpen: !this.state.isAddModalOpen,
@@ -57,26 +47,24 @@ class EmployeeList extends Component {
 
     this.toggleAddModal ();
     console.log (event);
-    let body = {
-      name: event.target[0].value,
-      address: event.target[1].value,
-      email: event.target[2].value,
-      phone: event.target[3].value,
-      department: event.target[4].value,
-      position: event.target[5].value,
-    };
+
     axios
-      .post ('http://localhost:3000/employees', {
-        headers: {
-          Authorization: `bearer ${user.token}`,
+      .post (
+        'http://localhost:3000/employees/',
+        {
+          name: event.target[0].value,
+          address: event.target[1].value,
+          email: event.target[2].value,
+          phone: event.target[3].value,
+          department: event.target[4].value,
+          position: event.target[5].value,
         },
-        name: event.target[0].value,
-        address: event.target[1].value,
-        email: event.target[2].value,
-        phone: event.target[3].value,
-        department: event.target[4].value,
-        position: event.target[5].value,
-      })
+        {
+          headers: {
+            Authorization: `bearer ${user.token}`,
+          },
+        }
+      )
       .then (this.LoadEmployeesInfo ())
       .catch (err => {
         console.log (err);
@@ -104,13 +92,15 @@ class EmployeeList extends Component {
   render () {
     return (
       <div>
-        <BootstrapTable  version='4' data={this.state.employee}>
-        <TableHeaderColumn isKey dataField='id'> ID</TableHeaderColumn>
-        <TableHeaderColumn dataField='name'> Name</TableHeaderColumn>
-        <TableHeaderColumn dataField='email'> Email</TableHeaderColumn>
-        <TableHeaderColumn dataField='address'> Address</TableHeaderColumn>
+        <BootstrapTable version="4" data={this.state.employee}>
+          <TableHeaderColumn isKey dataField="id"> ID</TableHeaderColumn>
+          <TableHeaderColumn dataField="name"> Name</TableHeaderColumn>
+          <TableHeaderColumn dataField="email"> Email</TableHeaderColumn>
+          <TableHeaderColumn dataField="address"> Address</TableHeaderColumn>
+
         </BootstrapTable>
-        <Button onClick={this.toggleAddModal}> Add </Button>
+        <Button color="primary" onClick={this.toggleAddModal}> Add </Button>
+
         <Modal
           size="lg"
           id="AddModal"
