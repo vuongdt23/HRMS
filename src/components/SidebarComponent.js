@@ -7,7 +7,7 @@ import {
   faQuestion,
   faImage,
   faCopy,
-  faCalendarAlt
+  faCalendarAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { NavItem, NavLink, Nav } from "reactstrap";
 import classNames from "classnames";
@@ -25,7 +25,6 @@ const SideBar = ({ isOpen, toggle }) => (
     </div>
     <div className="side-menu">
       <Nav vertical className="list-unstyled pb-3">
-        <p>Dummy Heading</p>
         <SubMenu title="Home" icon={faHome} items={submenus[0]} />
         <NavItem>
           <NavLink tag={Link} to={"/home"}>
