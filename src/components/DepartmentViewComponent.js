@@ -39,19 +39,24 @@ class DepartmentView extends Component {
   }
   onDepartmentSubmit (event) {
     const {user, setUser} = this.context;
-    console.log(user);
+    console.log (user);
     event.preventDefault ();
 
     this.toggleAddModal ();
     console.log (event);
     axios
-      .post ('http://localhost:3000/departments/', {
-        headers: {
-          Authorization: `bearer ${user.token}`,
+      .post (
+        'http://localhost:3000/departments/',
+        {
+          name: event.target[0].value,
+          descr: event.target[1].value,
         },
-        name: event.target[0].value,
-        descr: event.target[1].value,
-      })
+        {
+          headers: {
+            Authorization: `bearer ${user.token}`,
+          },
+        }
+      )
       .then (this.LoadDepartmentInfo ())
       .catch (err => {
         console.log (err);

@@ -1,11 +1,13 @@
 import React, {useContext, useState, Component} from 'react';
 import userContext from '../context/usercontext';
 import axios from 'axios';
-import {Table, tr, td, Button, Modal} from 'reactstrap';
+import {Button, Modal, ModalHeader, ModalFooter} from 'reactstrap';
 import EmployeeForm from './EmployeeForm';
-import DepartmentForm from './DepartmentForm';
+import EmployeeEditForm from './EmployeeEditForm';
+
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import {el} from 'date-fns/locale';
 
 class EmployeeList extends Component {
   constructor (props) {
@@ -13,25 +15,42 @@ class EmployeeList extends Component {
     this.state = {
       employee: [],
       isAddModalOpen: false,
+      isDeleteModalOpen: false,
       isEditModalOpen: false,
-      editUserIndex: 0,
+      SelectedEmployeeIndex: null,
     };
     this.toggleAddModal = this.toggleAddModal.bind (this);
     this.toggleEditModal = this.toggleEditModal.bind (this);
+    this.toggleDeleteModal = this.toggleDeleteModal.bind (this);
     this.onFormClose = this.onFormClose.bind (this);
     this.onEmployeeSubmit = this.onEmployeeSubmit.bind (this);
     this.handleEditButtonClick = this.handleEditButtonClick.bind (this);
+    this.handleSelection = this.handleSelection.bind (this);
+    this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind (this);
   }
   handleEditButtonClick (event) {
-    this.setState ({editUserIndex: event.target.id});
-    console.log (JSON.stringify (this.state.editUserIndex));
+    if (this.state.SelectedEmployeeIndex == null) return;
+    else this.toggleEditModal ();
   }
-
+  handleSelection (row, isSelect, rowIndex, e) {
+    this.setState ({editUserIndex: row.name});
+    console.log ('index', this.state.editUserIndex);
+    console.log ('row', row);
+  }
+  handleDeleteButtonClick () {
+    if (this.state.SelectedEmployeeIndex == null) return;
+    else this.toggleDeleteModal ();
+  }
+  toggleDeleteModal () {
+    this.setState ({
+      isDeleteModalOpen: !this.state.isDeleteModalOpen,
+    });
+  }
   toggleAddModal () {
     this.setState ({
       isAddModalOpen: !this.state.isAddModalOpen,
     });
-    console.log ('AAAAAAAAAAAAAAAA');
+    //console.log ('AAAAAAAAAAAAAAAA');
   }
   toggleEditModal () {
     this.setState ({
@@ -92,7 +111,30 @@ class EmployeeList extends Component {
   render () {
     return (
       <div>
-        <BootstrapTable version="4" data={this.state.employee}>
+        <BootstrapTable
+          search
+          selectRow={{
+            mode: 'radio',
+            bgColor: 'blue',
+            clickToSelect: true,
+            hideSelectColumn: true,
+            onSelect: (row, isSelected, rowIndex, e) => {
+            //  console.log (isSelected, row.id);
+              if (isSelected)
+                this.setState ({SelectedEmployeeIndex: row.id}, () => {
+                  //alert (this.state.SelectedEmployeeIndex);
+                });
+              else {
+                this.setState ({SelectedEmployeeIndex: null}, () => {
+                  // alert (this.state.SelectedEmployeeIndex);
+                });
+              }
+            },
+          }}
+          on
+          version="4"
+          data={this.state.employee}
+        >
           <TableHeaderColumn isKey dataField="id"> ID</TableHeaderColumn>
           <TableHeaderColumn dataField="name"> Name</TableHeaderColumn>
           <TableHeaderColumn dataField="email"> Email</TableHeaderColumn>
@@ -100,7 +142,12 @@ class EmployeeList extends Component {
 
         </BootstrapTable>
         <Button color="primary" onClick={this.toggleAddModal}> Add </Button>
-
+        <Button color="danger" onClick={this.handleDeleteButtonClick}>
+          {' '}Delete{' '}
+        </Button>
+        <Button color="secondary" onClick={this.handleEditButtonClick}>
+          {' '}Edit{' '}
+        </Button>
         <Modal
           size="lg"
           id="AddModal"
@@ -112,8 +159,34 @@ class EmployeeList extends Component {
             onFormClose={this.onFormClose}
           />
         </Modal>
-        <Modal size="lg" id="Edit">
-          <div />{' '}
+        <Modal
+          size="lg"
+          id="AddModal"
+          isOpen={this.state.isEditModalOpen}
+          toggle={this.toggleAddModal}
+        >
+          <EmployeeEditForm
+            EmployeeID = {this.state.SelectedEmployeeIndex}
+            
+          />
+        </Modal>
+        
+        <Modal
+          isOpen={this.state.isDeleteModalOpen}
+          size="sm"
+          id="Confirm Delete"
+        >
+          <ModalHeader toggle={this.toggleEditModal}>
+
+            Confirm Delete Employee?
+          </ModalHeader>
+
+          <ModalFooter>
+            <Button color="danger">Confirm</Button>{' '}
+            <Button color="secondary" onClick={this.toggleDeleteModal}>
+              Cancel
+            </Button>
+          </ModalFooter>
         </Modal>
       </div>
     );
