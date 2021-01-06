@@ -19,6 +19,7 @@ class Main extends Component {
     this.state = {
       user: {
         isLoggedin: false,
+        permisson: ''
       },
     };
   }

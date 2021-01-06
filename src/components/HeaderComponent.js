@@ -59,6 +59,29 @@ class Header extends Component {
       isErrorShown: !this.state.isErrorShown,
     });
   }
+  loadUserPermission () {
+    const {user, setUser} = this.context;
+    const olduser = user;
+    if (user.isLoggedin) {
+      axios
+        .get ('http://localhost:3000/users/' + user.id, {
+          headers: {
+            Authorization: `bearer ${user.token}`,
+          },
+        })
+        .then (res => {
+          console.log (res.data);
+          setUser ({
+            id: olduser.id,
+            token: olduser.token,
+            isLoggedin: olduser.isLoggedin,
+            permission: res.data.permission,
+          })
+          console.log('Set new Context, ', user);
+          
+        });
+    }
+  }
 
   handleLogin (event) {
     const {user, setUser} = this.context;
@@ -77,8 +100,8 @@ class Header extends Component {
         };
 
         setUser (newuser);
+        this.loadUserPermission ();
         console.log ('New Context', this.context);
-        console.log (this.context);
         this.toggleModal ();
       })
       .catch (err => {
@@ -87,6 +110,7 @@ class Header extends Component {
       });
     event.preventDefault ();
   }
+
   render () {
     return (
       <React.Fragment>
@@ -143,6 +167,7 @@ class Header extends Component {
                     : <Button color="primary" onClick={this.toggleModal}>
                         {' '}LOGIN{' '}
                       </Button>}
+
                 </NavItem>
 
               </Nav>

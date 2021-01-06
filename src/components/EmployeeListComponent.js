@@ -23,6 +23,7 @@ class EmployeeList extends Component {
     this.toggleEditModal = this.toggleEditModal.bind (this);
     this.toggleDeleteModal = this.toggleDeleteModal.bind (this);
     this.onFormClose = this.onFormClose.bind (this);
+    this.onEditFormClose = this.onEditFormClose.bind(this);
     this.onEmployeeSubmit = this.onEmployeeSubmit.bind (this);
     this.handleEditButtonClick = this.handleEditButtonClick.bind (this);
     this.handleSelection = this.handleSelection.bind (this);
@@ -51,6 +52,9 @@ class EmployeeList extends Component {
       isAddModalOpen: !this.state.isAddModalOpen,
     });
     //console.log ('AAAAAAAAAAAAAAAA');
+  }
+  onEditFormClose () {
+    this.toggleEditModal ();
   }
   toggleEditModal () {
     this.setState ({
@@ -89,6 +93,9 @@ class EmployeeList extends Component {
         console.log (err);
       });
   }
+  onEmployeeEditSubmit (event) {
+    const {user, setUser} = this.context;
+  }
   static contextType = userContext;
   LoadEmployeesInfo = () => {
     const {user, setUser} = this.context;
@@ -119,7 +126,7 @@ class EmployeeList extends Component {
             clickToSelect: true,
             hideSelectColumn: true,
             onSelect: (row, isSelected, rowIndex, e) => {
-            //  console.log (isSelected, row.id);
+              //  console.log (isSelected, row.id);
               if (isSelected)
                 this.setState ({SelectedEmployeeIndex: row.id}, () => {
                   //alert (this.state.SelectedEmployeeIndex);
@@ -153,6 +160,7 @@ class EmployeeList extends Component {
           id="AddModal"
           isOpen={this.state.isAddModalOpen}
           toggle={this.toggleAddModal}
+          backdrop="static"
         >
           <EmployeeForm
             onEmployeeSubmit={this.onEmployeeSubmit}
@@ -164,13 +172,14 @@ class EmployeeList extends Component {
           id="AddModal"
           isOpen={this.state.isEditModalOpen}
           toggle={this.toggleAddModal}
+          backdrop="static"
         >
           <EmployeeEditForm
-            EmployeeID = {this.state.SelectedEmployeeIndex}
-            
+            EmployeeID={this.state.SelectedEmployeeIndex}
+            onEditFormClose={this.onEditFormClose}
           />
         </Modal>
-        
+
         <Modal
           isOpen={this.state.isDeleteModalOpen}
           size="sm"

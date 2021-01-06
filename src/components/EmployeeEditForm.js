@@ -25,7 +25,7 @@ class EmployeeEditForm extends Component {
       .then (response => {
         console.log (response.data[0]);
         this.setState ({Employee: response.data[0]}, () => {
-         // alert (this.state.Employee.name);
+          // alert (this.state.Employee.name);
         });
       })
       .catch (error => {
@@ -120,8 +120,12 @@ class EmployeeEditForm extends Component {
                 Phone Number
               </Form.Label>
               <Col sm={10} className="form-input">
-                <Form.Control type="text" placeholder="Phone Number" required
-                defaultValue={this.state.Employee.phone} />
+                <Form.Control
+                  type="text"
+                  placeholder="Phone Number"
+                  required
+                  defaultValue={this.state.Employee.phone}
+                />
               </Col>
             </Form.Group>
 
@@ -166,7 +170,7 @@ class EmployeeEditForm extends Component {
                 <Button type="submit">Submit</Button>
               </Col>
               <Col sm={{span: 4, offset: 2}} id="form-cancel-button-inner">
-                <Button type="reset" onClick={this.props.onFormClose}>
+                <Button type="reset" onClick={this.props.onEditFormClose}>
                   cancel
                 </Button>
               </Col>
