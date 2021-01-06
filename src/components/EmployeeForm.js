@@ -72,7 +72,7 @@ class EmployeeForm extends Component {
   render () {
     return (
       <div className="container">
-        <h2 id="role-form-title">Add Employee Details</h2>
+        <h2 id="role-form-title">Add Employee </h2>
         <div id="role-form-outer-div">
           <Form id="form" onSubmit={this.props.onEmployeeSubmit}>
            
@@ -136,8 +136,8 @@ class EmployeeForm extends Component {
                     Select your option
                   </option>
                   {this.state.departmentData.map ((data, index) => (
-                    <option key={index} value={data['id']}>
-                      {data['name']}
+                    <option key={index} value={data['depid']}>
+                      {data['depname']}
                     </option>
                   ))}
                 </Form.Control>
@@ -154,8 +154,8 @@ class EmployeeForm extends Component {
                     Select your option
                   </option>
                   {this.state.positionData.map ((data, index) => (
-                    <option key={index} value={data['id']}>
-                      {data['name']}
+                    <option key={index} value={data['posid']}>
+                      {data['posname']}
                     </option>
                   ))}
                 </Form.Control>
@@ -171,8 +171,8 @@ class EmployeeForm extends Component {
                     Select your option
                   </option>
                   {this.state.payrollData.map ((data, index) => (
-                    <option key={index} value={data['id']}>
-                      {data['descr']}
+                    <option key={index} value={data['payrollid']}>
+                      {data['payrolldescr']}
                     </option>
                   ))}
                 </Form.Control>

@@ -12,7 +12,7 @@ class EmployeeEditForm extends Component {
     positionData: [],
     departmentData: [],
     payrollData:[],
-    Employee: 0,
+    Employee: '',
   };
 
   loadEmployee = () => {
@@ -82,8 +82,9 @@ class EmployeeEditForm extends Component {
   componentWillMount () {
     this.loadPositionInfo ();
     this.loadDepartmentInfo ();
-    this.loadEmployee ();
     this.loadPayrollInfo();
+    this.loadEmployee ();
+
   }
 
   render () {
@@ -91,7 +92,7 @@ class EmployeeEditForm extends Component {
       <div className="container">
         <h2 id="role-form-title">Edit Employee Details</h2>
         <div id="role-form-outer-div">
-          <Form id="form" onSubmit={this.props.onEmployeeSubmit}>
+          <Form id="form" onSubmit={this.props.handleEdit}>
 
             <Form.Group as={Row}>
               <Form.Label column sm={2}>

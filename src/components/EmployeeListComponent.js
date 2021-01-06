@@ -28,21 +28,27 @@ class EmployeeList extends Component {
     this.handleSelection = this.handleSelection.bind (this);
     this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind (this);
     this.handleDelete = this.handleDelete.bind (this);
+    this.handleEdit = this.handleEdit.bind (this);
+  }
+  handleEdit (event) {
+    event.preventDefault ();
+    this.toggleEditModal ();
   }
   handleDelete () {
     const {user, setUser} = this.context;
-    axios.delete (
-      
-      'http://localhost:3000/employees/' + this.state.SelectedEmployeeIndex,
-      {
-        headers: {
-          Authorization: `bearer ${user.token}`,
-        },
-      }
-    ).then(res=>{
-      this.LoadEmployeesInfo();
-      this.toggleDeleteModal();
-    })
+    axios
+      .delete (
+        'http://localhost:3000/employees/' + this.state.SelectedEmployeeIndex,
+        {
+          headers: {
+            Authorization: `bearer ${user.token}`,
+          },
+        }
+      )
+      .then (res => {
+        this.LoadEmployeesInfo ();
+        this.toggleDeleteModal ();
+      });
   }
   handleEditButtonClick (event) {
     if (this.state.SelectedEmployeeIndex == null) return;
@@ -84,7 +90,15 @@ class EmployeeList extends Component {
     event.preventDefault ();
 
     this.toggleAddModal ();
-    console.log (event);
+    console.log ( "value", {
+      name: event.target[0].value,
+      address: event.target[1].value,
+      email: event.target[2].value,
+      phone: event.target[3].value,
+      department: event.target[4].value,
+      position: event.target[5].value,
+      payroll: event.target[6].value,
+    });
 
     axios
       .post (
@@ -162,7 +176,9 @@ class EmployeeList extends Component {
           <TableHeaderColumn dataField="name"> Name</TableHeaderColumn>
           <TableHeaderColumn dataField="email"> Email</TableHeaderColumn>
           <TableHeaderColumn dataField="address"> Address</TableHeaderColumn>
-
+          <TableHeaderColumn dataField="depname"> Department</TableHeaderColumn>
+          <TableHeaderColumn dataField="posname"> Position</TableHeaderColumn>
+          <TableHeaderColumn dataField="amount"> Salary</TableHeaderColumn>
         </BootstrapTable>
         <Button color="primary" onClick={this.toggleAddModal}> Add </Button>
         <Button color="danger" onClick={this.handleDeleteButtonClick}>
@@ -191,6 +207,7 @@ class EmployeeList extends Component {
           backdrop="static"
         >
           <EmployeeEditForm
+            handleEdit={this.handleEdit}
             EmployeeID={this.state.SelectedEmployeeIndex}
             onEditFormClose={this.onEditFormClose}
           />
