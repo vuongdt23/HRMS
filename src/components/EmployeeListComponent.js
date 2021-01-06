@@ -7,7 +7,6 @@ import EmployeeEditForm from './EmployeeEditForm';
 
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
-import {el} from 'date-fns/locale';
 
 class EmployeeList extends Component {
   constructor (props) {
@@ -23,11 +22,27 @@ class EmployeeList extends Component {
     this.toggleEditModal = this.toggleEditModal.bind (this);
     this.toggleDeleteModal = this.toggleDeleteModal.bind (this);
     this.onFormClose = this.onFormClose.bind (this);
-    this.onEditFormClose = this.onEditFormClose.bind(this);
+    this.onEditFormClose = this.onEditFormClose.bind (this);
     this.onEmployeeSubmit = this.onEmployeeSubmit.bind (this);
     this.handleEditButtonClick = this.handleEditButtonClick.bind (this);
     this.handleSelection = this.handleSelection.bind (this);
     this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind (this);
+    this.handleDelete = this.handleDelete.bind (this);
+  }
+  handleDelete () {
+    const {user, setUser} = this.context;
+    axios.delete (
+      
+      'http://localhost:3000/employees/' + this.state.SelectedEmployeeIndex,
+      {
+        headers: {
+          Authorization: `bearer ${user.token}`,
+        },
+      }
+    ).then(res=>{
+      this.LoadEmployeesInfo();
+      this.toggleDeleteModal();
+    })
   }
   handleEditButtonClick (event) {
     if (this.state.SelectedEmployeeIndex == null) return;
@@ -81,6 +96,7 @@ class EmployeeList extends Component {
           phone: event.target[3].value,
           department: event.target[4].value,
           position: event.target[5].value,
+          payroll: event.target[6].value,
         },
         {
           headers: {
@@ -185,13 +201,14 @@ class EmployeeList extends Component {
           size="sm"
           id="Confirm Delete"
         >
-          <ModalHeader toggle={this.toggleEditModal}>
+          <ModalHeader toggle={this.toggleDeleteModal}>
 
             Confirm Delete Employee?
           </ModalHeader>
 
           <ModalFooter>
-            <Button color="danger">Confirm</Button>{' '}
+            <Button color="danger" onClick={this.handleDelete}>Confirm</Button>
+            {' '}
             <Button color="secondary" onClick={this.toggleDeleteModal}>
               Cancel
             </Button>

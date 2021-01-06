@@ -11,13 +11,28 @@ class EmployeeForm extends Component {
     roleData: [],
     positionData: [],
     departmentData: [],
-    name:'',
-    email:'',
+    payrollData:[],
+   
    
 
   };
 
- 
+  loadPayrollInfo=()=>{
+    const {user, setUser} = this.context;
+    axios
+    .get ('http://localhost:3000/payroll/', {
+      headers: {
+        Authorization: `bearer ${user.token}`,
+      },
+    })
+    .then (response => {
+      this.setState ({payrollData: response.data});
+    })
+    .catch (error => {
+      console.log (error);
+    });
+
+  }
   loadPositionInfo = () => {
     const {user, setUser} = this.context;
     axios
@@ -51,6 +66,7 @@ class EmployeeForm extends Component {
   componentWillMount () {
     this.loadPositionInfo ();
     this.loadDepartmentInfo ();
+    this.loadPayrollInfo();
   }
 
   render () {
@@ -140,6 +156,23 @@ class EmployeeForm extends Component {
                   {this.state.positionData.map ((data, index) => (
                     <option key={index} value={data['id']}>
                       {data['name']}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row}>
+              <Form.Label column sm={2}>
+                Payroll
+              </Form.Label>
+              <Col sm={10} className="form-input">
+                <Form.Control as="select" name="department" required>
+                  <option value="" disabled selected>
+                    Select your option
+                  </option>
+                  {this.state.payrollData.map ((data, index) => (
+                    <option key={index} value={data['id']}>
+                      {data['descr']}
                     </option>
                   ))}
                 </Form.Control>

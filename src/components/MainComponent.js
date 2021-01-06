@@ -4,7 +4,6 @@ import Footer from './FooterComponent';
 import Apply from './ApplyComponent';
 import Schedule from './ScheduleComponent';
 import Sidebar from './SidebarComponent';
-import EmployeesView from './EmployeesViewComponent';
 import EmployeeList from './EmployeeListComponent';
 import DepartmentView from './DepartmentViewComponent';
 
