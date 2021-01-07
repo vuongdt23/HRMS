@@ -3,24 +3,24 @@ import React, {Component} from 'react';
 import {Form, Button, Col, Row} from 'react-bootstrap';
 import axios from 'axios';
 
-class DepartmentForm extends Component {
-  
+class PositionForm extends Component {
+  state = {};
   render () {
     return (
       <div>
-        <h2 id="role-form-title">Add Department Details</h2>
+        <h2 id="role-form-title">Add Position Details</h2>
 
         <div id="role-form-outer-div">
-          <Form id="form" onSubmit={this.props.onDepartmentSubmit}>
+          <Form id="form" onSubmit={this.props.onPositionSubmit}>
             <Form.Group as={Row}>
               <Form.Label column sm={2}>
-                Department
+                Position
               </Form.Label>
               <Col sm={10} className="form-input">
                 <Form.Control
                   type="Text"
-                  placeholder="Department"
-                  name="Department"
+                  placeholder="Position"
+                  name="Position"
                  // onChange={e => {
                 //    this.props.HandleDepartmentNameChange (e.target.value);
                  // }}
@@ -31,13 +31,13 @@ class DepartmentForm extends Component {
 
             <Form.Group as={Row}>
               <Form.Label column sm={2}>
-                Department Description
+                Position Description
               </Form.Label>
               <Col sm={10} className="form-input">
                 <Form.Control
                   type="Text"
-                  placeholder="Department Description"
-                  name="Department Description"
+                  placeholder=" Description"
+                  name="Position Description"
                   required
                 />
               </Col>
@@ -62,4 +62,4 @@ class DepartmentForm extends Component {
   }
 }
 
-export default DepartmentForm;
+export default PositionForm;

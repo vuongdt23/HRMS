@@ -2,7 +2,7 @@ import {Component} from 'react';
 import userContext from '../context/usercontext';
 import axios from 'axios';
 import {Table, tr, td, Button, Modal} from 'reactstrap';
-import DepartmentForm from './DepartmentForm';
+import PositionForm from './PositionForm';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 class PositionList extends Component {
@@ -13,7 +13,7 @@ class PositionList extends Component {
       isAddModalOpen: false,
     };
     this.toggleAddModal = this.toggleAddModal.bind (this);
-    this.onDepartmentSubmit = this.onDepartmentSubmit.bind (this);
+    this.onPositionSubmit = this.onPositionSubmit.bind (this);
   }
   static contextType = userContext;
 
@@ -37,42 +37,44 @@ class PositionList extends Component {
       isAddModalOpen: !this.state.isAddModalOpen,
     });
   }
-//   onDepartmentSubmit (event) {
-//     const {user, setUser} = this.context;
-//     console.log (user);
-//     event.preventDefault ();
+    onPositionSubmit (event) {
+      const {user, setUser} = this.context;
+      console.log (user);
+      event.preventDefault ();
 
-//     this.toggleAddModal ();
-//     console.log (event);
-//     axios
-//       .post (
-//         'http://localhost:3000/departments/',
-//         {
-//           name: event.target[0].value,
-//           descr: event.target[1].value,
-//         },
-//         {
-//           headers: {
-//             Authorization: `bearer ${user.token}`,
-//           },
-//         }
-//       )
-//       .then (this.LoadDepartmentInfo ())
-//       .catch (err => {
-//         console.log (err);
-//       });
-//   }
+      this.toggleAddModal ();
+      console.log (event);
+      axios
+        .post (
+          'http://localhost:3000/positions/',
+          {
+            posname: event.target[0].value,
+            posdescr: event.target[1].value,
+          },
+          {
+            headers: {
+              Authorization: `bearer ${user.token}`,
+            },
+          }
+        )
+        .then (this.LoadPositionInfo ())
+        .catch (err => {
+          console.log (err);
+        });
+    }
   componentDidMount () {
-    this.LoadDepartmentInfo ();
+    this.LoadPositionInfo ();
   }
 
   render () {
     return (
       <div>
         <BootstrapTable version="4" data={this.state.positionData}>
-          <TableHeaderColumn isKey dataField="id"> ID</TableHeaderColumn>
-          <TableHeaderColumn dataField="name"> Name</TableHeaderColumn>
-          <TableHeaderColumn dataField="descr"> Description </TableHeaderColumn>
+          <TableHeaderColumn isKey dataField="posid"> ID</TableHeaderColumn>
+          <TableHeaderColumn dataField="posname"> Name</TableHeaderColumn>
+          <TableHeaderColumn dataField="posdescr">
+            {' '}Description{' '}
+          </TableHeaderColumn>
 
         </BootstrapTable>
         <Button color="primary" onClick={this.toggleAddModal}> Add </Button>
@@ -83,7 +85,7 @@ class PositionList extends Component {
           isOpen={this.state.isAddModalOpen}
           toggle={this.toggleAddModal}
         >
-          <DepartmentForm onDepartmentSubmit={this.onDepartmentSubmit} />
+          <PositionForm onPositionSubmit={this.onPositionSubmit}/>
         </Modal>
         <Modal size="lg" id="Edit">
           <div />{' '}

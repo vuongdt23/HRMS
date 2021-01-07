@@ -160,9 +160,29 @@ class DepartmentView extends Component {
           <TableHeaderColumn dataField="depdescr"> Description </TableHeaderColumn>
 
         </BootstrapTable>
-        <Button color="primary" onClick={this.toggleAddModal}> Add </Button>
-        <Button color="secondary"  > Edit </Button>
-        <Button color="primary" onClick={this.handleDeleteButtonClick}> Delete </Button>
+        <div className="row">
+          <Button
+            className="col-2 mr-auto"
+            color="primary"
+            onClick={this.toggleAddModal}
+          >
+            {' '}Add{' '}
+          </Button>
+          <Button
+            className="col-2 mr-auto"
+            color="danger"
+            onClick={this.handleDeleteButtonClick}
+          >
+            {' '}Delete{' '}
+          </Button>
+          <Button
+            className="col-2 mr-auto"
+            color="secondary"
+            onClick={this.handleEditButtonClick}
+          >
+            {' '}Edit{' '}
+          </Button>
+        </div>
         <Modal
           size="lg"
           id="AddModal"
