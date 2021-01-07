@@ -30,9 +30,9 @@ class DepartmentView extends Component {
     this.toggleDeleteModal = this.toggleDeleteModal.bind (this);
     this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind (this);
     this.handleDelete = this.handleDelete.bind (this);
-    this.toggleEditModal = this.toggleEditModal.bind(this);
+    this.toggleEditModal = this.toggleEditModal.bind (this);
     this.handleEditButtonClick = this.handleEditButtonClick.bind (this);
-
+    this.handleEdit = this.handleEdit.bind (this);
   }
   static contextType = userContext;
   handleDeleteButtonClick () {
@@ -42,6 +42,28 @@ class DepartmentView extends Component {
   handleEditButtonClick (event) {
     if (this.state.SelectedDepIndex == null) return;
     else this.toggleEditModal ();
+  }
+
+  handleEdit (event) {
+    event.preventDefault ();
+    const {user, setUser} = this.context;
+    axios
+      .put (
+        'http://localhost:3000/departments/' + this.state.SelectedDepIndex,
+        {
+          depname: event.target[0].value,
+          depdescr: event.target[1].value,
+        },
+        {
+          headers: {
+            Authorization: `bearer ${user.token}`,
+          },
+        }
+      )
+      .then (res => {
+        this.LoadDepartmentInfo ();
+        this.toggleEditModal ();
+      });
   }
   handleDelete () {
     const {user, setUser} = this.context;
@@ -218,18 +240,19 @@ class DepartmentView extends Component {
         >
           <DepartmentForm
             onDepartmentSubmit={this.onDepartmentSubmit}
-            onCancel={this.onCancel}
+            onCancel={this.toggleAddModal}
           />
         </Modal>
         <Modal
           size="lg"
-          id="AddModal"
+          id="EditModal"
           isOpen={this.state.isEditModalOpen}
           toggle={this.toggleAddModal}
           backdrop="static"
         >
           <DepartmentEditForm
             //handleEdit={this.handleEdit}
+            HandleEdit={this.handleEdit}
             DepartmentID={this.state.SelectedDepIndex}
             onEditFormClose={this.toggleEditModal}
           />

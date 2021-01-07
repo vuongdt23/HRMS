@@ -5,15 +5,23 @@ import {Table, tr, td, Button, Modal} from 'reactstrap';
 import PositionForm from './PositionForm';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import PositionEditForm from './PositionEditForm';
 class PositionList extends Component {
   constructor (props) {
     super (props);
     this.state = {
       positionData: [],
       isAddModalOpen: false,
+      selectedPosIndex: null,
+      isDeleteModalOpen: false,
+      isEditModalOpen: false,
     };
     this.toggleAddModal = this.toggleAddModal.bind (this);
     this.onPositionSubmit = this.onPositionSubmit.bind (this);
+    this.toggleDeleteModal = this.toggleDeleteModal.bind (this);
+    this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind (this);
+    this.toggleEditModal = this.toggleEditModal.bind (this);
+    this.handleEditButtonClick = this.handleEditButtonClick.bind (this);
   }
   static contextType = userContext;
 
@@ -37,31 +45,58 @@ class PositionList extends Component {
       isAddModalOpen: !this.state.isAddModalOpen,
     });
   }
-    onPositionSubmit (event) {
-      const {user, setUser} = this.context;
-      console.log (user);
-      event.preventDefault ();
 
-      this.toggleAddModal ();
-      console.log (event);
-      axios
-        .post (
-          'http://localhost:3000/positions/',
-          {
-            posname: event.target[0].value,
-            posdescr: event.target[1].value,
-          },
-          {
-            headers: {
-              Authorization: `bearer ${user.token}`,
-            },
-          }
-        )
-        .then (this.LoadPositionInfo ())
-        .catch (err => {
-          console.log (err);
-        });
+  toggleDeleteModal () {
+    this.setState ({
+      isDeleteModalOpen: !this.state.isDeleteModalOpen,
+    });
+  }
+
+  toggleEditModal () {
+    this.setState ({
+      isEditModalOpen: !this.state.isEditModalOpen,
+    });
+  }
+
+  handleDeleteButtonClick () {
+    if (this.state.selectedPosIndex == null) return;
+    else {
+      this.toggleDeleteModal ();
+      // alert ('AAAAAAAAAAA');
     }
+  }
+  handleEditButtonClick () {
+    if (this.state.selectedPosIndex == null) return;
+    else {
+      this.toggleEditModal ();
+      //  alert ('AAAAAAAAAAA');
+    }
+  }
+  onPositionSubmit (event) {
+    const {user, setUser} = this.context;
+    console.log (user);
+    event.preventDefault ();
+
+    this.toggleAddModal ();
+    console.log (event);
+    axios
+      .post (
+        'http://localhost:3000/positions/',
+        {
+          posname: event.target[0].value,
+          posdescr: event.target[1].value,
+        },
+        {
+          headers: {
+            Authorization: `bearer ${user.token}`,
+          },
+        }
+      )
+      .then (this.LoadPositionInfo ())
+      .catch (err => {
+        console.log (err);
+      });
+  }
   componentDidMount () {
     this.LoadPositionInfo ();
   }
@@ -69,7 +104,28 @@ class PositionList extends Component {
   render () {
     return (
       <div>
-        <BootstrapTable version="4" data={this.state.positionData}>
+        <BootstrapTable
+          version="4"
+          data={this.state.positionData}
+          selectRow={{
+            mode: 'radio',
+            bgColor: 'blue',
+            clickToSelect: true,
+            hideSelectColumn: true,
+            onSelect: (row, isSelected, rowIndex, e) => {
+              //  console.log (isSelected, row.id);
+              if (isSelected)
+                this.setState ({selectedPosIndex: row.posid}, () => {
+                  //  alert (this.state.selectedPosIndex);
+                });
+              else {
+                this.setState ({selectedPosIndex: null}, () => {
+                  //   alert (this.state.selectedPosIndex);
+                });
+              }
+            },
+          }}
+        >
           <TableHeaderColumn isKey dataField="posid"> ID</TableHeaderColumn>
           <TableHeaderColumn dataField="posname"> Name</TableHeaderColumn>
           <TableHeaderColumn dataField="posdescr">
@@ -77,7 +133,29 @@ class PositionList extends Component {
           </TableHeaderColumn>
 
         </BootstrapTable>
-        <Button color="primary" onClick={this.toggleAddModal}> Add </Button>
+        <div className="row">
+          <Button
+            className="col-2 mr-auto"
+            color="primary"
+            onClick={this.toggleAddModal}
+          >
+            {' '}Add{' '}
+          </Button>
+          <Button
+            className="col-2 mr-auto"
+            color="danger"
+            onClick={this.handleDeleteButtonClick}
+          >
+            {' '}Delete{' '}
+          </Button>
+          <Button
+            className="col-2 mr-auto"
+            color="secondary"
+            onClick={this.handleEditButtonClick}
+          >
+            {' '}Edit{' '}
+          </Button>
+        </div>
 
         <Modal
           size="lg"
@@ -85,10 +163,16 @@ class PositionList extends Component {
           isOpen={this.state.isAddModalOpen}
           toggle={this.toggleAddModal}
         >
-          <PositionForm onPositionSubmit={this.onPositionSubmit}/>
+          <PositionForm onPositionSubmit={this.onPositionSubmit} />
         </Modal>
-        <Modal size="lg" id="Edit">
-          <div />{' '}
+
+        <Modal
+          toggle={this.toggleEditModal}
+          isOpen={this.state.isEditModalOpen}
+          size="lg"
+          id="Edit"
+        >
+          <PositionEditForm positionID={this.state.selectedPosIndex} />
         </Modal>
       </div>
     );
