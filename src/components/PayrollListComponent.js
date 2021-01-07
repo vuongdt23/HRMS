@@ -1,16 +1,14 @@
 import {Component} from 'react';
 import userContext from '../context/usercontext';
 import axios from 'axios';
-import {Table, tr, td, Button, Modal, ModalFooter, ModalHeader} from 'reactstrap';
-import PositionForm from './PositionForm';
+import {Table, tr, td, Button, Modal} from 'reactstrap';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
-import PositionEditForm from './PositionEditForm';
-class PositionList extends Component {
+class PayrollList extends Component {
   constructor (props) {
     super (props);
     this.state = {
-      positionData: [],
+      payrollData: [],
       isAddModalOpen: false,
       selectedPosIndex: null,
       isDeleteModalOpen: false,
@@ -23,34 +21,18 @@ class PositionList extends Component {
     this.toggleEditModal = this.toggleEditModal.bind (this);
     this.handleEditButtonClick = this.handleEditButtonClick.bind (this);
     this.HandleEdit = this.HandleEdit.bind (this);
-    this.handleDelete=this.handleDelete.bind(this);
   }
   static contextType = userContext;
-  handleDelete () {
-    const {user, setUser} = this.context;
-    axios
-      .delete (
-        'http://localhost:3000/positions/' + this.state.selectedPosIndex,
-        {
-          headers: {
-            Authorization: `bearer ${user.token}`,
-          },
-        }
-      )
-      .then (res => {
-        this.LoadPositionInfo ();
-        this.toggleDeleteModal ();
-      });
-  }
+
   HandleEdit (event) {
     event.preventDefault ();
     const {user, setUser} = this.context;
     axios
       .put (
-        'http://localhost:3000/positions/' + this.state.selectedPosIndex,
+        'http://localhost:3000/payroll/' + this.state.selectedPosIndex,
         {
-          posname: event.target[0].value,
-          posdescr: event.target[1].value,
+          amount: event.target[0].value,
+          payrolldescr: event.target[1].value,
         },
         {
           headers: {
@@ -63,16 +45,16 @@ class PositionList extends Component {
         this.toggleEditModal ();
       });
   }
-  LoadPositionInfo = () => {
+  LoadPayrollInfo = () => {
     const {user, setUser} = this.context;
     axios
-      .get ('http://localhost:3000/positions/', {
+      .get ('http://localhost:3000/payroll/', {
         headers: {
           Authorization: `bearer ${user.token}`,
         },
       })
       .then (response => {
-        this.setState ({positionData: response.data});
+        this.setState ({payrollData: response.data});
       })
       .catch (error => {
         console.log (error);
@@ -119,7 +101,7 @@ class PositionList extends Component {
     console.log (event);
     axios
       .post (
-        'http://localhost:3000/positions/',
+        'http://localhost:3000/payrolls/',
         {
           posname: event.target[0].value,
           posdescr: event.target[1].value,
@@ -136,7 +118,7 @@ class PositionList extends Component {
       });
   }
   componentDidMount () {
-    this.LoadPositionInfo ();
+    this.LoadPayrollInfo ();
   }
 
   render () {
@@ -144,7 +126,7 @@ class PositionList extends Component {
       <div>
         <BootstrapTable
           version="4"
-          data={this.state.positionData}
+          data={this.state.payrollData}
           selectRow={{
             mode: 'radio',
             bgColor: 'blue',
@@ -153,7 +135,7 @@ class PositionList extends Component {
             onSelect: (row, isSelected, rowIndex, e) => {
               //  console.log (isSelected, row.id);
               if (isSelected)
-                this.setState ({selectedPosIndex: row.posid}, () => {
+                this.setState ({selectedPosIndex: row.payrollid}, () => {
                   //  alert (this.state.selectedPosIndex);
                 });
               else {
@@ -164,10 +146,10 @@ class PositionList extends Component {
             },
           }}
         >
-          <TableHeaderColumn isKey dataField="posid"> ID</TableHeaderColumn>
-          <TableHeaderColumn dataField="posname"> Name</TableHeaderColumn>
-          <TableHeaderColumn dataField="posdescr">
-            {' '}Description{' '}
+          <TableHeaderColumn isKey dataField="payrollid"> ID</TableHeaderColumn>
+          <TableHeaderColumn dataField="payrolldescr"> Pay</TableHeaderColumn>
+          <TableHeaderColumn dataField="amount">
+            {' '}Amount{' '}
           </TableHeaderColumn>
 
         </BootstrapTable>
@@ -196,53 +178,20 @@ class PositionList extends Component {
         </div>
 
         <Modal
-          backdrop="static"
           size="lg"
           id="AddModal"
           isOpen={this.state.isAddModalOpen}
           toggle={this.toggleAddModal}
-        >
-          <PositionForm
-            onPositionSubmit={this.onPositionSubmit}
-            onCancel={this.toggleAddModal}
-          />
-        </Modal>
+        />
 
         <Modal
-          backdrop="static"
           toggle={this.toggleEditModal}
           isOpen={this.state.isEditModalOpen}
           size="lg"
           id="Edit"
-        >
-          <PositionEditForm
-            positionID={this.state.selectedPosIndex}
-            HandleEdit={this.HandleEdit}
-            onEditFormClose={this.toggleEditModal}
-          />
-        </Modal>
-
-        <Modal
-          isOpen={this.state.isDeleteModalOpen}
-          size="sm"
-          id="Confirm Delete"
-          toggle={this.toggleDeleteModal}
-        >
-          <ModalHeader toggle={this.toggleDeleteModal}>
-
-            Confirm Delete Position?
-          </ModalHeader>
-
-          <ModalFooter>
-            <Button color="danger" onClick={this.handleDelete}>Confirm</Button>
-            {' '}
-            <Button color="secondary" onClick={this.toggleDeleteModal}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </Modal>
+        />
       </div>
     );
   }
 }
-export default PositionList;
+export default PayrollList;

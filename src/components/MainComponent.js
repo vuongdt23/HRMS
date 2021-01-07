@@ -1,24 +1,22 @@
 import React, {Component} from 'react';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
-import Apply from './ApplyComponent';
-import Schedule from './ScheduleComponent';
+import PayrollList from './PayrollListComponent';
 import Sidebar from './SidebarComponent';
 import EmployeeList from './EmployeeListComponent';
 import DepartmentView from './DepartmentViewComponent';
-import PositionList from './PositionListViewComponent'
+import PositionList from './PositionListViewComponent';
 import '../App.css';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import Home from './HomeComponent';
 import userContext from '../context/usercontext';
-import EmployeeForm from './EmployeeForm';
 class Main extends Component {
   constructor (props) {
     super (props);
     this.state = {
       user: {
         isLoggedin: false,
-        permisson: ''
+        permisson: '',
       },
     };
   }
@@ -32,41 +30,39 @@ class Main extends Component {
     const HomePage = () => {
       return <Home />;
     };
-    const ApplyPage = () => {
-      return <Apply />;
-    };
-    const SchedulePage = () => {
+
+    const DepartmentPage = () => {
       return (
         <userContext.Provider value={{user, setUser}}>
-          <Schedule />;
+          <DepartmentView />
         </userContext.Provider>
       );
     };
-    const DepartmentPage =() =>{
+    const PayrollPage = () => {
       return (
         <userContext.Provider value={{user, setUser}}>
-        <DepartmentView/>
+          <PayrollList />
         </userContext.Provider>
       );
-    }
+    };
     const EmployeesViewPage = () => {
       return (
         <userContext.Provider value={{user, setUser}}>
           <EmployeeList />
         </userContext.Provider>
-      );  
+      );
     };
     const DepartmentsPage = () => {
       return (
         <userContext.Provider value={{user, setUser}}>
-         <DepartmentView/>
+          <DepartmentView />
         </userContext.Provider>
       );
     };
     const PositionsPage = () => {
       return (
         <userContext.Provider value={{user, setUser}}>
-         <PositionList/>
+          <PositionList />
         </userContext.Provider>
       );
     };
@@ -84,11 +80,11 @@ class Main extends Component {
           <div className="col-10">
             <Switch>
               <Route path="/home" component={HomePage} />
-              <Route path="/Apply" component={ApplyPage} />
-          
-              <Route path="/Employees" component={EmployeesViewPage}/>
-              <Route path="/Departments" component={DepartmentsPage}/>
-              <Route path="/Positions" component={PositionsPage}/>
+
+              <Route path="/Employees" component={EmployeesViewPage} />
+              <Route path="/Departments" component={DepartmentsPage} />
+              <Route path="/Positions" component={PositionsPage} />
+              <Route path="/Payroll" component={PayrollPage} />
               <Redirect to="/home" />
             </Switch>
 

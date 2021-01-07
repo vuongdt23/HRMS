@@ -11,7 +11,7 @@ class EmployeeEditForm extends Component {
     roleData: [],
     positionData: [],
     departmentData: [],
-    payrollData:[],
+    payrollData: [],
     Employee: '',
   };
 
@@ -25,9 +25,7 @@ class EmployeeEditForm extends Component {
       })
       .then (response => {
         console.log (response.data[0]);
-        this.setState ({Employee: response.data[0]}, () => {
-         
-        });
+        this.setState ({Employee: response.data[0]}, () => {});
       })
       .catch (error => {
         console.log (error);
@@ -63,28 +61,26 @@ class EmployeeEditForm extends Component {
         console.log (error);
       });
   };
-  loadPayrollInfo=()=>{
+  loadPayrollInfo = () => {
     const {user, setUser} = this.context;
     axios
-    .get ('http://localhost:3000/payroll/', {
-      headers: {
-        Authorization: `bearer ${user.token}`,
-      },
-    })
-    .then (response => {
-      this.setState ({payrollData: response.data});
-    })
-    .catch (error => {
-      console.log (error);
-    });
-
-  }
+      .get ('http://localhost:3000/payroll/', {
+        headers: {
+          Authorization: `bearer ${user.token}`,
+        },
+      })
+      .then (response => {
+        this.setState ({payrollData: response.data});
+      })
+      .catch (error => {
+        console.log (error);
+      });
+  };
   componentWillMount () {
     this.loadPositionInfo ();
     this.loadDepartmentInfo ();
-    this.loadPayrollInfo();
+    this.loadPayrollInfo ();
     this.loadEmployee ();
-
   }
 
   render () {
@@ -153,7 +149,12 @@ class EmployeeEditForm extends Component {
                 Department
               </Form.Label>
               <Col sm={10} className="form-input">
-                <Form.Control as="select" name="department" required defaultValue={this.state.Employee.department}>
+                <Form.Control
+                  as="select"
+                  name="department"
+                  required
+                  defaultValue={this.state.Employee.department}
+                >
                   <option value="" disabled>
                     Select your option
                   </option>
@@ -171,8 +172,13 @@ class EmployeeEditForm extends Component {
                 Position
               </Form.Label>
               <Col sm={10} className="form-input">
-                <Form.Control as="select" name="position" required defaultValue={this.state.Employee.position}>
-                  <option value="" disabled >
+                <Form.Control
+                  as="select"
+                  name="position"
+                  required
+                  defaultValue={this.state.Employee.position}
+                >
+                  <option value="" disabled>
                     Select your option
                   </option>
                   {this.state.positionData.map ((data, index) => (
@@ -188,8 +194,13 @@ class EmployeeEditForm extends Component {
                 Payroll
               </Form.Label>
               <Col sm={10} className="form-input">
-                <Form.Control as="select" name="department" required defaultValue={this.state.Employee.payroll}>
-                  <option value="" disabled >
+                <Form.Control
+                  as="select"
+                  name="department"
+                  required
+                  defaultValue={this.state.Employee.payroll}
+                >
+                  <option value="" disabled>
                     Select your option
                   </option>
                   {this.state.payrollData.map ((data, index) => (
