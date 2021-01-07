@@ -132,31 +132,9 @@ class Header extends Component {
                     <span className="fa fa-home fa-lg" /> Home
                   </NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink className="nav-link" to="/Apply">
-                    <span className="fa fa-info fa-lg" /> Apply
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink className="nav-link" to="/Schedule">
-                    <span className="fa fa-list fa-lg" /> Menu
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink className="nav-link" to="/Employees">
-                    <span className="fa fa-address-card fa-lg" /> Employees
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink className="nav-link" to="/Departments">
-                    <span className="fa fa-address-card fa-lg" />Departments
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink className="nav-link" to="/Positions">
-                    <span className="fa fa-address-card fa-lg" />Positions
-                  </NavLink>
-                </NavItem>
+                
+               
+                
               </Nav>
               <Nav className="ml-auto" navbar>
                 <NavItem>

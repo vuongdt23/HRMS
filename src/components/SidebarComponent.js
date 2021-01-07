@@ -1,5 +1,5 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from 'react';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
   faHome,
   faBriefcase,
@@ -8,47 +8,37 @@ import {
   faImage,
   faCopy,
   faCalendarAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import { NavItem, NavLink, Nav } from "reactstrap";
-import classNames from "classnames";
-import { Link } from "react-router-dom";
+} from '@fortawesome/free-solid-svg-icons';
 
-import SubMenu from "./SubMenu";
+import {NavItem, Nav} from 'reactstrap';
+import classNames from 'classnames';
+import {NavLink, Link} from 'react-router-dom';
 
-const SideBar = ({ isOpen, toggle }) => (
-  <div className={classNames("sidebar", { "is-open": isOpen })}>
+import SubMenu from './SubMenu';
+
+const SideBar = ({isOpen, toggle}) => (
+  <div className={classNames ('sidebar', {'is-open': isOpen})}>
     <div className="sidebar-header">
-      <span color="info" onClick={toggle} style={{ color: "#fff" }}>
+      <span color="info" onClick={toggle} style={{color: '#fff'}}>
         &times;
       </span>
       <h3>Navigation</h3>
     </div>
     <div className="side-menu">
-      <Nav vertical className="list-unstyled pb-3">
-        <SubMenu title="Home" icon={faHome} items={submenus[0]} />
+      <Nav vertical className="list-unstyled pb-3">    
         <NavItem>
-          <NavLink tag={Link} to={"/home"}>
-            <FontAwesomeIcon icon={faBriefcase} className="mr-2" />
-            About
-          </NavLink>
-        </NavItem>
-        <SubMenu title="Pages" icon={faCalendarAlt} items={submenus[1]} />
-        <NavItem>
-          <NavLink tag={Link} to={"/Schedule"}>
-            <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" />
-            Schedule
+          <NavLink className="nav-link" to="/Employees">
+            <span className="fa fa-address-card fa-lg" /> Employees
           </NavLink>
         </NavItem>
         <NavItem>
-          <NavLink tag={Link} to={"/Schedule"}>
-            <FontAwesomeIcon icon={faQuestion} className="mr-2" />
-            FAQ
+          <NavLink className="nav-link" to="/Departments">
+            <span className="fa fa-sitemap fa-lg" />Departments
           </NavLink>
         </NavItem>
         <NavItem>
-          <NavLink tag={Link} to={"/contact"}>
-            <FontAwesomeIcon icon={faPaperPlane} className="mr-2" />
-            Contact
+          <NavLink className="nav-link" to="/Positions">
+            <span className="fa fa-space-shuttle fa-lg" />Position
           </NavLink>
         </NavItem>
       </Nav>
@@ -59,26 +49,26 @@ const SideBar = ({ isOpen, toggle }) => (
 const submenus = [
   [
     {
-      title: "Home 1",
-      target: "Home-1",
+      title: 'Home 1',
+      target: 'Home-1',
     },
     {
-      title: "Home 2",
-      target: "Home-2",
+      title: 'Home 2',
+      target: 'Home-2',
     },
     {
-      itle: "Home 3",
-      target: "Home-3",
+      itle: 'Home 3',
+      target: 'Home-3',
     },
   ],
   [
     {
-      title: "Page 1",
-      target: "Page-1",
+      title: 'Page 1',
+      target: 'Page-1',
     },
     {
-      title: "Page 2",
-      target: "Page-2",
+      title: 'Page 2',
+      target: 'Page-2',
     },
   ],
 ];

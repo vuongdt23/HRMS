@@ -22,9 +22,31 @@ class PositionList extends Component {
     this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind (this);
     this.toggleEditModal = this.toggleEditModal.bind (this);
     this.handleEditButtonClick = this.handleEditButtonClick.bind (this);
+    this.HandleEdit= this.HandleEdit.bind(this);
   }
   static contextType = userContext;
 
+  HandleEdit (event) {
+    event.preventDefault ();
+    const {user, setUser} = this.context;
+    axios
+      .put (
+        'http://localhost:3000/positions/' + this.state.selectedPosIndex,
+        {
+          posname: event.target[0].value,
+          posdescr: event.target[1].value,
+        },
+        {
+          headers: {
+            Authorization: `bearer ${user.token}`,
+          },
+        }
+      )
+      .then (res => {
+        this.LoadPositionInfo ();
+        this.toggleEditModal ();
+      });
+  }
   LoadPositionInfo = () => {
     const {user, setUser} = this.context;
     axios
@@ -172,7 +194,10 @@ class PositionList extends Component {
           size="lg"
           id="Edit"
         >
-          <PositionEditForm positionID={this.state.selectedPosIndex} />
+          <PositionEditForm
+            positionID={this.state.selectedPosIndex}
+            HandleEdit={this.HandleEdit}
+          />
         </Modal>
       </div>
     );
