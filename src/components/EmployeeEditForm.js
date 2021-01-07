@@ -158,8 +158,8 @@ class EmployeeEditForm extends Component {
                     Select your option
                   </option>
                   {this.state.departmentData.map ((data, index) => (
-                    <option key={index} value={data['id']}>
-                      {data['name']}
+                    <option key={index} value={data['depid']}>
+                      {data['depname']}
                     </option>
                   ))}
                 </Form.Control>
@@ -176,8 +176,8 @@ class EmployeeEditForm extends Component {
                     Select your option
                   </option>
                   {this.state.positionData.map ((data, index) => (
-                    <option key={index} value={data['id']}>
-                      {data['name']}
+                    <option key={index} value={data['posid']}>
+                      {data['posname']}
                     </option>
                   ))}
                 </Form.Control>
@@ -193,8 +193,8 @@ class EmployeeEditForm extends Component {
                     Select your option
                   </option>
                   {this.state.payrollData.map ((data, index) => (
-                    <option key={index} value={data['id']}>
-                      {data['descr']}
+                    <option key={index} value={data['payrollid']}>
+                      {data['payrolldescr']}
                     </option>
                   ))}
                 </Form.Control>

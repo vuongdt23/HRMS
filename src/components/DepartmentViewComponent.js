@@ -1,7 +1,7 @@
 import {Component} from 'react';
 import userContext from '../context/usercontext';
 import axios from 'axios';
-import {Table, tr, td, Button, Modal} from 'reactstrap';
+import {Table, tr, td, Button, Modal, ModalHeader, ModalFooter} from 'reactstrap';
 import DepartmentForm from './DepartmentForm';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
@@ -11,12 +11,72 @@ class DepartmentView extends Component {
     this.state = {
       departmentData: [],
       isAddModalOpen: false,
+      isDeleteModalOpen: false,
+      isEditModalOpen: false,
+      SelectedDepIndex: null,
     };
+    this.onCancel = this.onCancel.bind(this);
     this.toggleAddModal = this.toggleAddModal.bind (this);
     this.onDepartmentSubmit = this.onDepartmentSubmit.bind (this);
+    this.toggleDeleteModal= this.toggleDeleteModal.bind(this);
+    this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
   static contextType = userContext;
+  handleDeleteButtonClick () {
+    if (this.state.SelectedDepIndex == null) return;
+    else this.toggleDeleteModal ();
+  }
+  handleDelete () {
+    const {user, setUser} = this.context;
+    axios
+      .delete (
+        'http://localhost:3000/departments/' + this.state.SelectedDepIndex,
+        {
+          headers: {
+            Authorization: `bearer ${user.token}`,
+          },
+        }
+      )
+      .then (res => {
+        this.LoadDepartmentInfo ();
+        this.toggleDeleteModal ();
+      });
+  }
+  onDepartmentSubmit(event){
+    event.preventDefault();
+    const {user, setUser} = this.context;
+    event.preventDefault ();
 
+    this.toggleAddModal ();
+    console.log ( "value", {
+      name: event.target[0].value,
+      address: event.target[1].value,
+      email: event.target[2].value,
+      phone: event.target[3].value,
+      department: event.target[4].value,
+      position: event.target[5].value,
+      payroll: event.target[6].value,
+    });
+
+    axios
+      .post (
+        'http://localhost:3000/departments/',
+        {
+          depname: event.target[0].value,
+          depdescr: event.target[1].value
+        },
+        {
+          headers: {
+            Authorization: `bearer ${user.token}`,
+          },
+        }
+      )
+      .then (this.LoadDepartmentInfo ())
+      .catch (err => {
+        console.log (err);
+      });
+  }
   LoadDepartmentInfo = () => {
     const {user, setUser} = this.context;
     axios
@@ -37,6 +97,14 @@ class DepartmentView extends Component {
       isAddModalOpen: !this.state.isAddModalOpen,
     });
   }
+  toggleDeleteModal () {
+    this.setState ({
+      isDeleteModalOpen: !this.state.isDeleteModalOpen,
+    });
+  }
+  onCancel () {
+    this.toggleAddModal ();
+  }
   onDepartmentSubmit (event) {
     const {user, setUser} = this.context;
     console.log (user);
@@ -48,8 +116,8 @@ class DepartmentView extends Component {
       .post (
         'http://localhost:3000/departments/',
         {
-          name: event.target[0].value,
-          descr: event.target[1].value,
+          depname: event.target[0].value,
+          depdescr: event.target[1].value,
         },
         {
           headers: {
@@ -69,24 +137,59 @@ class DepartmentView extends Component {
   render () {
     return (
       <div>
-        <BootstrapTable version="4" data={this.state.departmentData}>
-          <TableHeaderColumn isKey dataField="id"> ID</TableHeaderColumn>
-          <TableHeaderColumn dataField="name"> Name</TableHeaderColumn>
-          <TableHeaderColumn dataField="descr"> Description </TableHeaderColumn>
+        <BootstrapTable selectRow={{
+            mode: 'radio',
+            bgColor: 'blue',
+            clickToSelect: true,
+            hideSelectColumn: true,
+            onSelect: (row, isSelected, rowIndex, e) => {
+              //  console.log (isSelected, row.id);
+              if (isSelected)
+                this.setState ({SelectedDepIndex: row.depid}, () => {
+                //  alert (this.state.SelectedDepIndex);
+                });
+              else {
+                this.setState ({SelectedDepIndex: null}, () => {
+               //    alert (this.state.SelectedDepIndex);
+                });
+              }
+            },
+          }} version="4" data={this.state.departmentData}>
+          <TableHeaderColumn isKey dataField="depid"> ID</TableHeaderColumn>
+          <TableHeaderColumn dataField="depname"> Name</TableHeaderColumn>
+          <TableHeaderColumn dataField="depdescr"> Description </TableHeaderColumn>
 
         </BootstrapTable>
         <Button color="primary" onClick={this.toggleAddModal}> Add </Button>
-
+        <Button color="secondary"  > Edit </Button>
+        <Button color="primary" onClick={this.handleDeleteButtonClick}> Delete </Button>
         <Modal
           size="lg"
           id="AddModal"
           isOpen={this.state.isAddModalOpen}
           toggle={this.toggleAddModal}
         >
-          <DepartmentForm onDepartmentSubmit={this.onDepartmentSubmit} />
+          <DepartmentForm onDepartmentSubmit={this.onDepartmentSubmit}
+          onCancel = {this.onCancel} />
         </Modal>
-        <Modal size="lg" id="Edit">
-          <div />{' '}
+        <Modal
+          isOpen={this.state.isDeleteModalOpen}
+          size="sm"
+          id="Confirm Delete"
+          toggle={this.toggleDeleteModal}
+        >
+          <ModalHeader toggle={this.toggleDeleteModal}>
+
+            Confirm Delete Department?
+          </ModalHeader>
+
+          <ModalFooter>
+            <Button color="danger" onClick={this.handleDelete}>Confirm</Button>
+            {' '}
+            <Button color="secondary" onClick={this.toggleDeleteModal}>
+              Cancel
+            </Button>
+          </ModalFooter>
         </Modal>
       </div>
     );

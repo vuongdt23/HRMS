@@ -31,8 +31,42 @@ class EmployeeList extends Component {
     this.handleEdit = this.handleEdit.bind (this);
   }
   handleEdit (event) {
+    const {user, setUser} = this.context;
     event.preventDefault ();
+
     this.toggleEditModal ();
+    console.log ( "value", {
+      name: event.target[0].value,
+      address: event.target[1].value,
+      email: event.target[2].value,
+      phone: event.target[3].value,
+      department: event.target[4].value,
+      position: event.target[5].value,
+      payroll: event.target[6].value,
+    });
+
+    axios
+      .put (
+        'http://localhost:3000/employees/'+this.state.SelectedEmployeeIndex,
+        {
+          name: event.target[0].value,
+          address: event.target[1].value,
+          email: event.target[2].value,
+          phone: event.target[3].value,
+          department: event.target[4].value,
+          position: event.target[5].value,
+          payroll: event.target[6].value,
+        },
+        {
+          headers: {
+            Authorization: `bearer ${user.token}`,
+          },
+        }
+      )
+      .then (this.LoadEmployeesInfo ())
+      .catch (err => {
+        console.log (err);
+      });
   }
   handleDelete () {
     const {user, setUser} = this.context;
@@ -147,7 +181,7 @@ class EmployeeList extends Component {
   }
   render () {
     return (
-      <div>
+      <div className="container">
         <BootstrapTable
           search
           selectRow={{
@@ -171,6 +205,7 @@ class EmployeeList extends Component {
           on
           version="4"
           data={this.state.employee}
+          
         >
           <TableHeaderColumn isKey dataField="id"> ID</TableHeaderColumn>
           <TableHeaderColumn dataField="name"> Name</TableHeaderColumn>
@@ -180,13 +215,15 @@ class EmployeeList extends Component {
           <TableHeaderColumn dataField="posname"> Position</TableHeaderColumn>
           <TableHeaderColumn dataField="amount"> Salary</TableHeaderColumn>
         </BootstrapTable>
-        <Button color="primary" onClick={this.toggleAddModal}> Add </Button>
-        <Button color="danger" onClick={this.handleDeleteButtonClick}>
+        <div className="row">
+        <Button className="col-2 mr-auto" color="primary" onClick={this.toggleAddModal}> Add </Button>
+        <Button className="col-2 mr-auto" color="danger" onClick={this.handleDeleteButtonClick}>
           {' '}Delete{' '}
         </Button>
-        <Button color="secondary" onClick={this.handleEditButtonClick}>
+        <Button className="col-2 mr-auto" color="secondary" onClick={this.handleEditButtonClick}>
           {' '}Edit{' '}
         </Button>
+        </div>
         <Modal
           size="lg"
           id="AddModal"

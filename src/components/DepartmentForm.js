@@ -50,7 +50,7 @@ class DepartmentForm extends Component {
             </Form.Group>
             <Form.Group as={Row} id="form-cancel-button">
               <Col sm={{span: 10, offset: 2}} id="form-cancel-button-inner">
-                <Button type="reset" onClick={this.props.onFormClose}>
+                <Button type="reset" onClick={this.props.onCancel}>
                   cancel
                 </Button>
               </Col>
