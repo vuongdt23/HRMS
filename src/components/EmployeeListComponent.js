@@ -34,7 +34,6 @@ class EmployeeList extends Component {
     const {user, setUser} = this.context;
     event.preventDefault ();
 
-    this.toggleEditModal ();
     console.log ('value', {
       name: event.target[0].value,
       address: event.target[1].value,
@@ -64,9 +63,9 @@ class EmployeeList extends Component {
         }
       )
       .then (res => {
-        this.LoadEmployeesInfo ();
         this.toggleEditModal ();
-
+        this.LoadEmployeesInfo ();
+       
       })
       .catch (err => {
         console.log (err);

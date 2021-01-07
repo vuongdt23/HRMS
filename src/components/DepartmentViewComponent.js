@@ -1,9 +1,18 @@
 import {Component} from 'react';
 import userContext from '../context/usercontext';
 import axios from 'axios';
-import {Table, tr, td, Button, Modal, ModalHeader, ModalFooter} from 'reactstrap';
+import {
+  Table,
+  tr,
+  td,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalFooter,
+} from 'reactstrap';
 import DepartmentForm from './DepartmentForm';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import DepartmentEditForm from './DepartmentEditForm';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 class DepartmentView extends Component {
   constructor (props) {
@@ -15,17 +24,24 @@ class DepartmentView extends Component {
       isEditModalOpen: false,
       SelectedDepIndex: null,
     };
-    this.onCancel = this.onCancel.bind(this);
+    this.onCancel = this.onCancel.bind (this);
     this.toggleAddModal = this.toggleAddModal.bind (this);
     this.onDepartmentSubmit = this.onDepartmentSubmit.bind (this);
-    this.toggleDeleteModal= this.toggleDeleteModal.bind(this);
-    this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
+    this.toggleDeleteModal = this.toggleDeleteModal.bind (this);
+    this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind (this);
+    this.handleDelete = this.handleDelete.bind (this);
+    this.toggleEditModal = this.toggleEditModal.bind(this);
+    this.handleEditButtonClick = this.handleEditButtonClick.bind (this);
+
   }
   static contextType = userContext;
   handleDeleteButtonClick () {
     if (this.state.SelectedDepIndex == null) return;
     else this.toggleDeleteModal ();
+  }
+  handleEditButtonClick (event) {
+    if (this.state.SelectedDepIndex == null) return;
+    else this.toggleEditModal ();
   }
   handleDelete () {
     const {user, setUser} = this.context;
@@ -43,13 +59,13 @@ class DepartmentView extends Component {
         this.toggleDeleteModal ();
       });
   }
-  onDepartmentSubmit(event){
-    event.preventDefault();
+  onDepartmentSubmit (event) {
+    event.preventDefault ();
     const {user, setUser} = this.context;
     event.preventDefault ();
 
     this.toggleAddModal ();
-    console.log ( "value", {
+    console.log ('value', {
       name: event.target[0].value,
       address: event.target[1].value,
       email: event.target[2].value,
@@ -64,7 +80,7 @@ class DepartmentView extends Component {
         'http://localhost:3000/departments/',
         {
           depname: event.target[0].value,
-          depdescr: event.target[1].value
+          depdescr: event.target[1].value,
         },
         {
           headers: {
@@ -105,6 +121,11 @@ class DepartmentView extends Component {
   onCancel () {
     this.toggleAddModal ();
   }
+  toggleEditModal () {
+    this.setState ({
+      isEditModalOpen: !this.state.isEditModalOpen,
+    });
+  }
   onDepartmentSubmit (event) {
     const {user, setUser} = this.context;
     console.log (user);
@@ -136,8 +157,9 @@ class DepartmentView extends Component {
 
   render () {
     return (
-      <div>
-        <BootstrapTable selectRow={{
+      <div className="container">
+        <BootstrapTable
+          selectRow={{
             mode: 'radio',
             bgColor: 'blue',
             clickToSelect: true,
@@ -146,18 +168,23 @@ class DepartmentView extends Component {
               //  console.log (isSelected, row.id);
               if (isSelected)
                 this.setState ({SelectedDepIndex: row.depid}, () => {
-                //  alert (this.state.SelectedDepIndex);
+                  //  alert (this.state.SelectedDepIndex);
                 });
               else {
                 this.setState ({SelectedDepIndex: null}, () => {
-               //    alert (this.state.SelectedDepIndex);
+                  //    alert (this.state.SelectedDepIndex);
                 });
               }
             },
-          }} version="4" data={this.state.departmentData}>
+          }}
+          version="4"
+          data={this.state.departmentData}
+        >
           <TableHeaderColumn isKey dataField="depid"> ID</TableHeaderColumn>
           <TableHeaderColumn dataField="depname"> Name</TableHeaderColumn>
-          <TableHeaderColumn dataField="depdescr"> Description </TableHeaderColumn>
+          <TableHeaderColumn dataField="depdescr">
+            {' '}Description{' '}
+          </TableHeaderColumn>
 
         </BootstrapTable>
         <div className="row">
@@ -189,8 +216,23 @@ class DepartmentView extends Component {
           isOpen={this.state.isAddModalOpen}
           toggle={this.toggleAddModal}
         >
-          <DepartmentForm onDepartmentSubmit={this.onDepartmentSubmit}
-          onCancel = {this.onCancel} />
+          <DepartmentForm
+            onDepartmentSubmit={this.onDepartmentSubmit}
+            onCancel={this.onCancel}
+          />
+        </Modal>
+        <Modal
+          size="lg"
+          id="AddModal"
+          isOpen={this.state.isEditModalOpen}
+          toggle={this.toggleAddModal}
+          backdrop="static"
+        >
+          <DepartmentEditForm
+            //handleEdit={this.handleEdit}
+            DepartmentID={this.state.SelectedDepIndex}
+            onEditFormClose={this.toggleEditModal}
+          />
         </Modal>
         <Modal
           isOpen={this.state.isDeleteModalOpen}
