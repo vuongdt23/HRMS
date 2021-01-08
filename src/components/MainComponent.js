@@ -10,6 +10,7 @@ import '../App.css';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import Home from './HomeComponent';
 import userContext from '../context/usercontext';
+import UserProfile from './MyProfileComponent';
 class Main extends Component {
   constructor (props) {
     super (props);
@@ -66,6 +67,13 @@ class Main extends Component {
         </userContext.Provider>
       );
     };
+    const ProfilePage = () => {
+      return (
+        <userContext.Provider value={{user, setUser}}>
+          <UserProfile />
+        </userContext.Provider>
+      );
+    };
 
     return (
       <div>
@@ -85,6 +93,7 @@ class Main extends Component {
               <Route path="/Departments" component={DepartmentsPage} />
               <Route path="/Positions" component={PositionsPage} />
               <Route path="/Payroll" component={PayrollPage} />
+              <Route path="/Myprofile" component={ProfilePage} />
               <Redirect to="/home" />
             </Switch>
 

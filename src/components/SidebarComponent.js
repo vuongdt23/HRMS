@@ -34,6 +34,12 @@ const SideBar = ({isOpen, toggle}) => (
             <span className="fa fa-dollar fa-lg" />Payroll
           </NavLink>
         </NavItem>
+
+        <NavItem>
+          <NavLink className="nav-link" to="/Myprofile">
+            <span className="fa fa-user fa-lg" />My profile
+          </NavLink>
+        </NavItem>
       </Nav>
     </div>
   </div>

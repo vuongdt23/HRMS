@@ -153,9 +153,9 @@ class EmployeeEditForm extends Component {
                   as="select"
                   name="department"
                   required
-                  defaultValue={this.state.Employee.department}
+                 
                 >
-                  <option value="" disabled>
+                  <option value="" disabled selected>
                     Select your option
                   </option>
                   {this.state.departmentData.map ((data, index) => (
@@ -176,9 +176,9 @@ class EmployeeEditForm extends Component {
                   as="select"
                   name="position"
                   required
-                  defaultValue={this.state.Employee.position}
+                 
                 >
-                  <option value="" disabled>
+                  <option value="" disabled selected>
                     Select your option
                   </option>
                   {this.state.positionData.map ((data, index) => (
@@ -198,9 +198,9 @@ class EmployeeEditForm extends Component {
                   as="select"
                   name="department"
                   required
-                  defaultValue={this.state.Employee.payroll}
+                  
                 >
-                  <option value="" disabled>
+                  <option value="" disabled selected>
                     Select your option
                   </option>
                   {this.state.payrollData.map ((data, index) => (

@@ -33,11 +33,12 @@ class PayrollForm extends Component {
               <Form.Label column sm={2}>
                 Salary Amount
               </Form.Label>
+
               <Col sm={10} className="form-input">
                 <Form.Control
                   type="number"
-                  placeholder="Salary Description"
-                  name="Salary Description"
+                  placeholder="Salary Amount"
+                  name="Salary Amount"
                   required
                 />
               </Col>

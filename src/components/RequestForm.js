@@ -2,42 +2,16 @@ import React, {Component} from 'react';
 // import { Form,Button } from "react-bootstrap";
 import {Form, Button, Col, Row} from 'react-bootstrap';
 import axios from 'axios';
-import userContext from '../context/usercontext';
 
-class PayrollEditForm extends Component {
-  state = {
-    Position: '',
-    
-    
-  };
-  static contextType = userContext;
-
-  loadPosition = () => {
-    const {user, setUser} = this.context;
-    axios
-      .get ('http://localhost:3000/positions/' + this.props.positionID, {
-        headers: {
-          Authorization: `bearer ${user.token}`,
-        },
-      })
-      .then (response => {
-        console.log (response.data[0]);
-        this.setState ({Position: response.data[0]}, () => {});
-      })
-      .catch (error => {
-        console.log (error);
-      });
-  };
-  componentWillMount () {
-    this.loadPosition ();
-  }
+class PositionForm extends Component {
+  state = {};
   render () {
     return (
       <div className="container">
-        <h2 id="role-form-title">Edit Position Details</h2>
+        <h2 id="role-form-title">Send Request</h2>
 
         <div id="role-form-outer-div">
-          <Form id="form" onSubmit={this.props.HandleEdit}>
+          <Form id="form" onSubmit={this.props.onSubmit}>
             <Form.Group as={Row}>
               <Form.Label column sm={2}>
                 Position
@@ -45,12 +19,11 @@ class PayrollEditForm extends Component {
               <Col sm={10} className="form-input">
                 <Form.Control
                   type="Text"
-                  placeholder="Position"
-                  name="Position"
-                  defaultValue={this.state.Position.posname}
-                  // onChange={e => {
-                  //    this.props.HandleDepartmentNameChange (e.target.value);
-                  // }}
+                  placeholder="Title"
+                  name="Title"
+                 // onChange={e => {
+                //    this.props.HandleDepartmentNameChange (e.target.value);
+                 // }}
                   required
                 />
               </Col>
@@ -58,15 +31,14 @@ class PayrollEditForm extends Component {
 
             <Form.Group as={Row}>
               <Form.Label column sm={2}>
-                Position Description
+                Request Message 
               </Form.Label>
               <Col sm={10} className="form-input">
                 <Form.Control
                   type="Text"
-                  placeholder="Position Description"
-                  name="Position Description"
+                  placeholder="Request Message"
+                  name="Request Message "
                   required
-                  defaultValue={this.state.Position.posdescr}
                 />
               </Col>
             </Form.Group>
@@ -78,7 +50,7 @@ class PayrollEditForm extends Component {
             </Form.Group>
             <Form.Group as={Row} id="form-cancel-button">
               <Col sm={{span: 10, offset: 2}} id="form-cancel-button-inner">
-                <Button type="reset" onClick={this.props.onEditFormClose}>
+                <Button type="reset" onClick={this.props.onCancel}>
                   cancel
                 </Button>
               </Col>
@@ -90,4 +62,4 @@ class PayrollEditForm extends Component {
   }
 }
 
-export default PayrollEditForm;
+export default PositionForm;
