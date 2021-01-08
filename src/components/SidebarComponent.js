@@ -40,6 +40,12 @@ const SideBar = ({isOpen, toggle}) => (
             <span className="fa fa-user fa-lg" />My profile
           </NavLink>
         </NavItem>
+
+        <NavItem>
+          <NavLink className="nav-link" to="/request">
+            <span className="fa fa-user fa-lg" />Requests
+          </NavLink>
+        </NavItem>
       </Nav>
     </div>
   </div>

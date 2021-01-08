@@ -181,6 +181,7 @@ class DepartmentView extends Component {
     return (
       <div className="container">
         <BootstrapTable
+          search
           selectRow={{
             mode: 'radio',
             bgColor: 'blue',

@@ -141,8 +141,9 @@ class PositionList extends Component {
 
   render () {
     return (
-      <div>
+      <div className="container">
         <BootstrapTable
+        search
           version="4"
           data={this.state.positionData}
           selectRow={{

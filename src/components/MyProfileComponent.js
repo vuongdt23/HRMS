@@ -1,16 +1,76 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 
-import {Card, CardHeader, CardTitle, CardBody, Label} from 'reactstrap';
+import {Card, Modal, CardTitle, CardBody, Label, Button} from 'reactstrap';
 import userContext from '../context/usercontext';
+import RequestForm from './RequestForm';
+import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
 class EmployeeProfile extends Component {
   static contextType = userContext;
 
   state = {
+    isSendRequestModalOpen: false,
+    isViewRequestModalOpen: false,
     Employee: '',
+    Request: '',
   };
 
+  toggleViewRequestModal = () => {
+    this.setState ({
+      isViewRequestModalOpen: !this.state.isViewRequestModalOpen,
+    });
+  };
+  toggleRequestModal = () => {
+    this.setState ({
+      isSendRequestModalOpen: !this.state.isSendRequestModalOpen,
+    });
+  };
+  handleRequestSend = event => {
+    const {user, setUser} = this.context;
+    console.log (user);
+    event.preventDefault ();
+
+    console.log (event);
+    axios
+      .post (
+        'http://localhost:3000/request/employees/' + user.id,
+        {
+          restitle: event.target[0].value,
+          resdescr: event.target[1].value,
+        },
+        {
+          headers: {
+            Authorization: `bearer ${user.token}`,
+          },
+        }
+      )
+      .then (res => {
+        this.toggleRequestModal ();
+      })
+      .catch (err => {
+        console.log (err);
+      });
+  };
+  loadRequest = () => {
+    const {user, setUser} = this.context;
+    axios
+      .get ('http://localhost:3000/request/employees/' + user.id, {
+        headers: {
+          Authorization: `bearer ${user.token}`,
+        },
+      })
+      .then (response => {
+        console.log (response.data);
+        this.setState ({Request: response.data}, () => {
+          //  lert (this.state.Request);
+        });
+      })
+      .catch (error => {
+        console.log (error);
+      });
+  };
   loadEmployee = () => {
     const {user, setUser} = this.context;
     axios
@@ -30,6 +90,7 @@ class EmployeeProfile extends Component {
 
   componentWillMount () {
     this.loadEmployee ();
+    this.loadRequest ();
   }
 
   render () {
@@ -69,6 +130,28 @@ class EmployeeProfile extends Component {
 
           </CardBody>
         </Card>
+        <Button onClick={this.toggleRequestModal}> Send Request</Button>
+        <Button onClick={this.toggleViewRequestModal}> My Requests</Button>
+        <Modal isOpen={this.state.isSendRequestModalOpen}>
+          <RequestForm onSubmit={this.handleRequestSend} />
+        </Modal>
+
+        <Modal isOpen={this.state.isViewRequestModalOpen}>
+          <BootstrapTable version="4" data={this.state.Request}>
+            <TableHeaderColumn sort isKey dataField="resid">
+              {' '}ID
+            </TableHeaderColumn>
+            <TableHeaderColumn dataField="restitle"> Title</TableHeaderColumn>
+            <TableHeaderColumn dataField="resdescr">
+              {' '}Description{' '}
+            </TableHeaderColumn>
+            <TableHeaderColumn dataField="resrespond">
+              {' '}Respond
+            </TableHeaderColumn>
+          </BootstrapTable>
+
+          <Button color="primary" onClick={this.toggleViewRequestModal}> Back</Button>
+        </Modal>
       </div>
     );
   }

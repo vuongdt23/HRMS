@@ -11,6 +11,7 @@ import {Switch, Route, Redirect} from 'react-router-dom';
 import Home from './HomeComponent';
 import userContext from '../context/usercontext';
 import UserProfile from './MyProfileComponent';
+import RequestView from './RequestViewComponent';
 class Main extends Component {
   constructor (props) {
     super (props);
@@ -74,6 +75,13 @@ class Main extends Component {
         </userContext.Provider>
       );
     };
+    const RequestPage = () => {
+      return (
+        <userContext.Provider value={{user, setUser}}>
+          <RequestView />
+        </userContext.Provider>
+      );
+    };
 
     return (
       <div>
@@ -94,6 +102,7 @@ class Main extends Component {
               <Route path="/Positions" component={PositionsPage} />
               <Route path="/Payroll" component={PayrollPage} />
               <Route path="/Myprofile" component={ProfilePage} />
+              <Route path="/Request" component={RequestPage} />
               <Redirect to="/home" />
             </Switch>
 

@@ -150,7 +150,7 @@ class PayrollList extends Component {
   render () {
     return (
       <div>
-        <BootstrapTable
+        <BootstrapTable search
           version="4"
           data={this.state.payrollData}
           selectRow={{
