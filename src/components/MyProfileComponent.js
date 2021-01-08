@@ -47,7 +47,8 @@ class EmployeeProfile extends Component {
         }
       )
       .then (res => {
-        this.toggleRequestModal ();
+        this.toggleRequestModal ()
+        this.loadRequest();
       })
       .catch (err => {
         console.log (err);

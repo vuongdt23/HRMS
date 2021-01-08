@@ -90,8 +90,9 @@ class Main extends Component {
         </userContext.Provider>
         <div className="row">
           <div className="col-2">
-
-            <Sidebar />
+            <userContext.Provider value={{user, setUser}}>
+              <Sidebar />
+            </userContext.Provider>
           </div>
           <div className="col-10">
             <Switch>
