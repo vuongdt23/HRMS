@@ -1,7 +1,7 @@
 import React from 'react';
 import userContext from '../context/usercontext';
 import {useContext} from 'react';
-import {NavItem, Nav} from 'reactstrap';
+import {NavItem, Nav, Alert} from 'reactstrap';
 import classNames from 'classnames';
 import {NavLink, Link} from 'react-router-dom';
 
@@ -10,7 +10,9 @@ const SideBar = ({isOpen, toggle}) => {
   if (!user.user.isLoggedin)
     return (
       <div className={classNames ('sidebar', {'is-open': isOpen})}>
-        {' '}Login to Acess
+        <Alert color="warning">
+         You are not logged in, Login to acccess more functionalities
+        </Alert>
       </div>
     );
   else if (user.user.permission == 'admin')
@@ -46,7 +48,7 @@ const SideBar = ({isOpen, toggle}) => {
             </NavItem>
             <NavItem>
               <NavLink className="nav-link" to="/request">
-                <span className="fa fa-user fa-lg" />Requests
+                <span className="fa fa-comment fa-lg" />Requests
               </NavLink>
             </NavItem>
           </Nav>

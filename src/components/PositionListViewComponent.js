@@ -140,6 +140,13 @@ class PositionList extends Component {
   }
 
   render () {
+    if (!this.context.user.isLoggedin || this.context.user.permission!= 'admin')
+    return (
+      <div>
+        Someone is lost
+      </div>
+    );
+    else
     return (
       <div className="container">
         <BootstrapTable
@@ -148,7 +155,7 @@ class PositionList extends Component {
           data={this.state.positionData}
           selectRow={{
             mode: 'radio',
-            bgColor: 'blue',
+            bgColor: 'gray',
             clickToSelect: true,
             hideSelectColumn: true,
             onSelect: (row, isSelected, rowIndex, e) => {
@@ -165,7 +172,7 @@ class PositionList extends Component {
             },
           }}
         >
-          <TableHeaderColumn isKey dataField="posid"> ID</TableHeaderColumn>
+          <TableHeaderColumn hidden isKey dataField="posid"> ID</TableHeaderColumn>
           <TableHeaderColumn dataField="posname"> Name</TableHeaderColumn>
           <TableHeaderColumn dataField="posdescr">
             {' '}Description{' '}

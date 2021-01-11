@@ -178,107 +178,118 @@ class DepartmentView extends Component {
   }
 
   render () {
-    return (
-      <div className="container">
-        <BootstrapTable
-          search
-          selectRow={{
-            mode: 'radio',
-            bgColor: 'blue',
-            clickToSelect: true,
-            hideSelectColumn: true,
-            onSelect: (row, isSelected, rowIndex, e) => {
-              //  console.log (isSelected, row.id);
-              if (isSelected)
-                this.setState ({SelectedDepIndex: row.depid}, () => {
-                  //  alert (this.state.SelectedDepIndex);
-                });
-              else {
-                this.setState ({SelectedDepIndex: null}, () => {
-                  //    alert (this.state.SelectedDepIndex);
-                });
-              }
-            },
-          }}
-          version="4"
-          data={this.state.departmentData}
-        >
-          <TableHeaderColumn isKey dataField="depid"> ID</TableHeaderColumn>
-          <TableHeaderColumn dataField="depname"> Name</TableHeaderColumn>
-          <TableHeaderColumn dataField="depdescr">
-            {' '}Description{' '}
-          </TableHeaderColumn>
-
-        </BootstrapTable>
-        <div className="row">
-          <Button
-            className="col-2 mr-auto"
-            color="primary"
-            onClick={this.toggleAddModal}
-          >
-            {' '}Add{' '}
-          </Button>
-          <Button
-            className="col-2 mr-auto"
-            color="danger"
-            onClick={this.handleDeleteButtonClick}
-          >
-            {' '}Delete{' '}
-          </Button>
-          <Button
-            className="col-2 mr-auto"
-            color="secondary"
-            onClick={this.handleEditButtonClick}
-          >
-            {' '}Edit{' '}
-          </Button>
+    if (!this.context.user.isLoggedin || this.context.user.permission!= 'admin')
+      return (
+        <div>
+          Someone is lost
         </div>
-        <Modal
-          size="lg"
-          id="AddModal"
-          isOpen={this.state.isAddModalOpen}
-          toggle={this.toggleAddModal}
-        >
-          <DepartmentForm
-            onDepartmentSubmit={this.onDepartmentSubmit}
-            onCancel={this.toggleAddModal}
-          />
-        </Modal>
-        <Modal
-          size="lg"
-          id="EditModal"
-          isOpen={this.state.isEditModalOpen}
-          toggle={this.toggleAddModal}
-          backdrop="static"
-        >
-          <DepartmentEditForm
-            //handleEdit={this.handleEdit}
-            HandleEdit={this.handleEdit}
-            DepartmentID={this.state.SelectedDepIndex}
-            onEditFormClose={this.toggleEditModal}
-          />
-        </Modal>
-        <Modal
-          isOpen={this.state.isDeleteModalOpen}
-          size="sm"
-          id="Confirm Delete"
-          toggle={this.toggleDeleteModal}
-        >
-          <ModalHeader toggle={this.toggleDeleteModal}>
+      );
+    else
+      return (
+        <div className="container">
+          <BootstrapTable
+            search
+            selectRow={{
+              mode: 'radio',
+              bgColor: 'gray',
+              clickToSelect: true,
+              hideSelectColumn: true,
+              onSelect: (row, isSelected, rowIndex, e) => {
+                //  console.log (isSelected, row.id);
+                if (isSelected)
+                  this.setState ({SelectedDepIndex: row.depid}, () => {
+                    //  alert (this.state.SelectedDepIndex);
+                  });
+                else {
+                  this.setState ({SelectedDepIndex: null}, () => {
+                    //    alert (this.state.SelectedDepIndex);
+                  });
+                }
+              },
+            }}
+            version="4"
+            data={this.state.departmentData}
+          >
+            <TableHeaderColumn hidden isKey dataField="depid">
+              {' '}ID
+            </TableHeaderColumn>
+            <TableHeaderColumn dataField="depname"> Name</TableHeaderColumn>
+            <TableHeaderColumn dataField="depdescr">
+              {' '}Description{' '}
+            </TableHeaderColumn>
 
-            Confirm Delete Department?
-          </ModalHeader>
-
-          <ModalFooter>
-            <Button color="danger" onClick={this.handleDelete}>Confirm</Button>
-            {' '}
-            <Button color="secondary" onClick={this.toggleDeleteModal}>
-              Cancel
+          </BootstrapTable>
+          <div className="row">
+            <Button
+              className="col-2 mr-auto"
+              color="primary"
+              onClick={this.toggleAddModal}
+            >
+              {' '}Add{' '}
             </Button>
-          </ModalFooter>
-        </Modal>
-      </div>
-    );
+            <Button
+              className="col-2 mr-auto"
+              color="danger"
+              onClick={this.handleDeleteButtonClick}
+            >
+              {' '}Delete{' '}
+            </Button>
+            <Button
+              className="col-2 mr-auto"
+              color="secondary"
+              onClick={this.handleEditButtonClick}
+            >
+              {' '}Edit{' '}
+            </Button>
+          </div>
+          <Modal
+            size="lg"
+            id="AddModal"
+            isOpen={this.state.isAddModalOpen}
+            toggle={this.toggleAddModal}
+          >
+            <DepartmentForm
+              onDepartmentSubmit={this.onDepartmentSubmit}
+              onCancel={this.toggleAddModal}
+            />
+          </Modal>
+          <Modal
+            size="lg"
+            id="EditModal"
+            isOpen={this.state.isEditModalOpen}
+            toggle={this.toggleAddModal}
+            backdrop="static"
+          >
+            <DepartmentEditForm
+              //handleEdit={this.handleEdit}
+              HandleEdit={this.handleEdit}
+              DepartmentID={this.state.SelectedDepIndex}
+              onEditFormClose={this.toggleEditModal}
+            />
+          </Modal>
+          <Modal
+            isOpen={this.state.isDeleteModalOpen}
+            size="sm"
+            id="Confirm Delete"
+            toggle={this.toggleDeleteModal}
+          >
+            <ModalHeader toggle={this.toggleDeleteModal}>
+
+              Confirm Delete Department?
+            </ModalHeader>
+
+            <ModalFooter>
+              <Button color="danger" onClick={this.handleDelete}>
+                Confirm
+              </Button>
+              {' '}
+              <Button color="secondary" onClick={this.toggleDeleteModal}>
+                Cancel
+              </Button>
+            </ModalFooter>
+          </Modal>
+        </div>
+      );
   }
 }
 export default DepartmentView;

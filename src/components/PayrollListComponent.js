@@ -148,104 +148,119 @@ class PayrollList extends Component {
   }
 
   render () {
-    return (
-      <div>
-        <BootstrapTable search
-          version="4"
-          data={this.state.payrollData}
-          selectRow={{
-            mode: 'radio',
-            bgColor: 'blue',
-            clickToSelect: true,
-            hideSelectColumn: true,
-            onSelect: (row, isSelected, rowIndex, e) => {
-              //  console.log (isSelected, row.id);
-              if (isSelected)
-                this.setState ({selectedPayrollIndex: row.payrollid}, () => {
-                  //  alert (this.state.selectedPosIndex);
-                });
-              else {
-                this.setState ({selectedPayrollIndex: null}, () => {
-                  //   alert (this.state.selectedPosIndex);
-                });
-              }
-            },
-          }}
-        >
-          <TableHeaderColumn isKey dataField="payrollid"> ID</TableHeaderColumn>
-          <TableHeaderColumn dataField="payrolldescr"> Pay</TableHeaderColumn>
-          <TableHeaderColumn dataField="amount">
-            {' '}Amount{' '}
-          </TableHeaderColumn>
-
-        </BootstrapTable>
-        <div className="row">
-          <Button
-            className="col-2 mr-auto"
-            color="primary"
-            onClick={this.toggleAddModal}
-          >
-            {' '}Add{' '}
-          </Button>
-          <Button
-            className="col-2 mr-auto"
-            color="danger"
-            onClick={this.handleDeleteButtonClick}
-          >
-            {' '}Delete{' '}
-          </Button>
-          <Button
-            className="col-2 mr-auto"
-            color="secondary"
-            onClick={this.handleEditButtonClick}
-          >
-            {' '}Edit{' '}
-          </Button>
+    if (
+      !this.context.user.isLoggedin ||
+      this.context.user.permission != 'admin'
+    )
+      return (
+        <div>
+          Someone is lost
         </div>
+      );
+    else
+      return (
+        <div>
+          <BootstrapTable
+            search
+            version="4"
+            data={this.state.payrollData}
+            selectRow={{
+              mode: 'radio',
+              bgColor: 'gray',
+              clickToSelect: true,
+              hideSelectColumn: true,
+              onSelect: (row, isSelected, rowIndex, e) => {
+                //  console.log (isSelected, row.id);
+                if (isSelected)
+                  this.setState ({selectedPayrollIndex: row.payrollid}, () => {
+                    //  alert (this.state.selectedPosIndex);
+                  });
+                else {
+                  this.setState ({selectedPayrollIndex: null}, () => {
+                    //   alert (this.state.selectedPosIndex);
+                  });
+                }
+              },
+            }}
+          >
+            <TableHeaderColumn isKey dataField="payrollid">
+              {' '}ID
+            </TableHeaderColumn>
+            <TableHeaderColumn dataField="payrolldescr"> Pay</TableHeaderColumn>
+            <TableHeaderColumn dataField="amount">
+              {' '}Amount{' '}
+            </TableHeaderColumn>
 
-        <Modal
-          size="lg"
-          id="AddModal"
-          isOpen={this.state.isAddModalOpen}
-          toggle={this.toggleAddModal}
-        >
-          {' '}<PayrollForm onPayrollSubmit={this.onPayrollSubmit} />
-        </Modal>
-
-        <Modal
-          toggle={this.toggleEditModal}
-          isOpen={this.state.isEditModalOpen}
-          size="lg"
-          id="Edit"
-        >
-          <PayrollEditForm
-            HandleEdit={this.HandleEdit}
-            onEditFormClose={this.toggleEditModal}
-            payrollID={this.state.selectedPayrollIndex}
-          />
-        </Modal>
-
-        <Modal
-          isOpen={this.state.isDeleteModalOpen}
-          size="sm"
-          id="Confirm Delete"
-          toggle={this.toggleDeleteModal}
-        >
-          <ModalHeader toggle={this.toggleDeleteModal}>
-
-            Confirm Delete Salary?
-          </ModalHeader>
-
-          <ModalFooter>
-            <Button color="danger" onClick={this.handleDelete}>Confirm</Button>
-            {' '}
-            <Button color="secondary" onClick={this.toggleDeleteModal}>
-              Cancel
+          </BootstrapTable>
+          <div className="row">
+            <Button
+              className="col-2 mr-auto"
+              color="primary"
+              onClick={this.toggleAddModal}
+            >
+              {' '}Add{' '}
             </Button>
-          </ModalFooter>
-        </Modal>
-      </div>
-    );
+            <Button
+              className="col-2 mr-auto"
+              color="danger"
+              onClick={this.handleDeleteButtonClick}
+            >
+              {' '}Delete{' '}
+            </Button>
+            <Button
+              className="col-2 mr-auto"
+              color="secondary"
+              onClick={this.handleEditButtonClick}
+            >
+              {' '}Edit{' '}
+            </Button>
+          </div>
+
+          <Modal
+            size="lg"
+            id="AddModal"
+            isOpen={this.state.isAddModalOpen}
+            toggle={this.toggleAddModal}
+          >
+            {' '}<PayrollForm onPayrollSubmit={this.onPayrollSubmit} />
+          </Modal>
+
+          <Modal
+            toggle={this.toggleEditModal}
+            isOpen={this.state.isEditModalOpen}
+            size="lg"
+            id="Edit"
+          >
+            <PayrollEditForm
+              HandleEdit={this.HandleEdit}
+              onEditFormClose={this.toggleEditModal}
+              payrollID={this.state.selectedPayrollIndex}
+            />
+          </Modal>
+
+          <Modal
+            isOpen={this.state.isDeleteModalOpen}
+            size="sm"
+            id="Confirm Delete"
+            toggle={this.toggleDeleteModal}
+          >
+            <ModalHeader toggle={this.toggleDeleteModal}>
+
+              Confirm Delete Salary?
+            </ModalHeader>
+
+            <ModalFooter>
+              <Button color="danger" onClick={this.handleDelete}>
+                Confirm
+              </Button>
+              {' '}
+              <Button color="secondary" onClick={this.toggleDeleteModal}>
+                Cancel
+              </Button>
+            </ModalFooter>
+          </Modal>
+        </div>
+      );
   }
 }
 export default PayrollList;

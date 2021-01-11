@@ -36,6 +36,7 @@ class PayrollForm extends Component {
 
               <Col sm={10} className="form-input">
                 <Form.Control
+                  
                   type="number"
                   placeholder="Salary Amount"
                   name="Salary Amount"

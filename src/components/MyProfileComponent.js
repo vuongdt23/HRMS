@@ -95,6 +95,13 @@ class EmployeeProfile extends Component {
   }
 
   render () {
+    if (!this.context.user.isLoggedin)
+    return (
+      <div>
+        Someone is lost
+      </div>
+    );
+    else
     return (
       <div>
         <Card>

@@ -183,13 +183,20 @@ class EmployeeList extends Component {
     this.LoadEmployeesInfo ();
   }
   render () {
+    if (!this.context.user.isLoggedin || this.context.user.permission!= 'admin')
+    return (
+      <div>
+        Someone is lost
+      </div>
+    );
+    else
     return (
       <div className="container">
         <BootstrapTable
           search
           selectRow={{
             mode: 'radio',
-            bgColor: 'blue',
+            bgColor: 'gray',
             clickToSelect: true,
             hideSelectColumn: true,
             onSelect: (row, isSelected, rowIndex, e) => {
@@ -209,7 +216,7 @@ class EmployeeList extends Component {
           version="4"
           data={this.state.employee}
         >
-          <TableHeaderColumn isKey dataField="id"> ID</TableHeaderColumn>
+          <TableHeaderColumn hidden isKey dataField="id"> ID</TableHeaderColumn>
           <TableHeaderColumn dataField="name"> Name</TableHeaderColumn>
           <TableHeaderColumn dataField="email"> Email</TableHeaderColumn>
           <TableHeaderColumn dataField="address"> Address</TableHeaderColumn>

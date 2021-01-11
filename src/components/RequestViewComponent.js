@@ -122,6 +122,13 @@ class RequestView extends Component {
   }
 
   render () {
+    if (!this.context.user.isLoggedin || this.context.user.permission!= 'admin')
+    return (
+      <div>
+        Someone is lost
+      </div>
+    );
+    else
     return (
       <div>
         <BootstrapTable
@@ -130,7 +137,7 @@ class RequestView extends Component {
           data={this.state.requestData}
           selectRow={{
             mode: 'radio',
-            bgColor: 'blue',
+            bgColor: 'gray',
             clickToSelect: true,
             hideSelectColumn: true,
             onSelect: (row, isSelected, rowIndex, e) => {
@@ -147,7 +154,7 @@ class RequestView extends Component {
             },
           }}
         >
-          <TableHeaderColumn isKey dataField="resid"> ID</TableHeaderColumn>
+          <TableHeaderColumn hidden isKey dataField="resid"> ID</TableHeaderColumn>
           <TableHeaderColumn dataField="restitle"> Title</TableHeaderColumn>
           <TableHeaderColumn dataField="name"> By</TableHeaderColumn>
         </BootstrapTable>
@@ -185,6 +192,7 @@ class RequestView extends Component {
           <RequestRespondForm
             handleRespond={this.handleRespond}
             reqid={this.state.selectedRequestIndex}
+            onEditFormClose={this.toggleRespondModal}
           />
         </Modal>
 

@@ -29,17 +29,13 @@ class Main extends Component {
   render () {
     const {user} = this.state;
     const {setUser} = this;
+
+
     const HomePage = () => {
       return <Home />;
     };
 
-    const DepartmentPage = () => {
-      return (
-        <userContext.Provider value={{user, setUser}}>
-          <DepartmentView />
-        </userContext.Provider>
-      );
-    };
+    
     const PayrollPage = () => {
       return (
         <userContext.Provider value={{user, setUser}}>
@@ -84,6 +80,7 @@ class Main extends Component {
     };
 
     return (
+     <div className="container"> 
       <div>
         <userContext.Provider value={{user, setUser}}>
           <Header />
@@ -109,7 +106,9 @@ class Main extends Component {
 
           </div>
         </div>
-        <Footer />
+         <Footer/>
+        
+      </div>
       </div>
     );
   }
