@@ -33,22 +33,22 @@ const SideBar = ({isOpen, toggle}) => {
             </NavItem>
             <NavItem>
               <NavLink className="nav-link" to="/Departments">
-                <span className="fa fa-sitemap fa-lg" />Departments
+                <span className="fa fa-sitemap fa-lg" />   Departments
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink className="nav-link" to="/Positions">
-                <span className="fa fa-space-shuttle fa-lg" />Position
+                <span className="fa fa-space-shuttle fa-lg" />  Position
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink className="nav-link" to="/Payroll">
-                <span className="fa fa-dollar fa-lg" />Payroll
+                <span className="fa fa-dollar fa-lg" />    Payroll
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink className="nav-link" to="/request">
-                <span className="fa fa-comment fa-lg" />Requests
+                <span className="fa fa-comment fa-lg" /> Requests
               </NavLink>
             </NavItem>
           </Nav>
@@ -69,7 +69,7 @@ const SideBar = ({isOpen, toggle}) => {
 
             <NavItem>
               <NavLink className="nav-link" to="/Myprofile">
-                <span className="fa fa-user fa-lg" />My profile
+                <span className="fa fa-user fa-lg" /> My profile
               </NavLink>
             </NavItem>
 

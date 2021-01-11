@@ -81,7 +81,7 @@ class RequestRespondForm extends Component {
                   placeholder="Respond Message"
                   name="Respond Message"
                   required
-                  defaultValue={this.state.Request.resespond}
+                  defaultValue={this.state.Request.resrespond}
                 />
               </Col>
             </Form.Group>

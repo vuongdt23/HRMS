@@ -192,9 +192,9 @@ class PayrollList extends Component {
             </TableHeaderColumn>
 
           </BootstrapTable>
-          <div className="row">
+          <div className="row mt-3">
             <Button
-              className="col-2 mr-auto"
+              className="col-2 ml-auto mr-auto"
               color="primary"
               onClick={this.toggleAddModal}
             >

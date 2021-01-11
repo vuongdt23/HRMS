@@ -80,7 +80,7 @@ class Main extends Component {
     };
 
     return (
-     <div className="container"> 
+     <div> 
       <div>
         <userContext.Provider value={{user, setUser}}>
           <Header />
@@ -106,7 +106,9 @@ class Main extends Component {
 
           </div>
         </div>
-         <Footer/>
+        <div className="fixed-bottom">
+        <Footer />
+        </div>
         
       </div>
       </div>

@@ -224,9 +224,9 @@ class EmployeeList extends Component {
           <TableHeaderColumn dataField="posname"> Position</TableHeaderColumn>
           <TableHeaderColumn dataField="amount"> Salary</TableHeaderColumn>
         </BootstrapTable>
-        <div className="row">
+        <div className="row mt-3">
           <Button
-            className="col-2 mr-auto"
+            className="col-2 ml-auto mr-auto"
             color="primary"
             onClick={this.toggleAddModal}
           >
@@ -244,6 +244,7 @@ class EmployeeList extends Component {
             color="secondary"
             onClick={this.handleEditButtonClick}
           >
+            
             {' '}Edit{' '}
           </Button>
         </div>
@@ -284,7 +285,7 @@ class EmployeeList extends Component {
           </ModalHeader>
 
           <ModalFooter>
-            <Button color="danger" onClick={this.handleDelete}>Confirm</Button>
+            <Button color="danger" onClick={this.handleDelete}> Confirm</Button>
             {' '}
             <Button color="secondary" onClick={this.toggleDeleteModal}>
               Cancel

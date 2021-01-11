@@ -195,10 +195,11 @@ class Header extends Component {
                   </Label>
                 </FormGroup>
                 <div className="row">
+                  <div className="col-4">
                   <Button type="submit" value="submit" color="primary">
                     Login
                   </Button>
-                  <a href="#" class="ml-auto">Register here</a>
+                  </div>
                 </div>
               </Form>
             </CardBody>

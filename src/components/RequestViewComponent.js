@@ -55,6 +55,7 @@ class RequestView extends Component {
         this.toggleRespondModal ();
       }).catch(err=>{
         console.log(err);
+      
       });
   }
   loadRequestInfo = () => {
@@ -158,17 +159,11 @@ class RequestView extends Component {
           <TableHeaderColumn dataField="restitle"> Title</TableHeaderColumn>
           <TableHeaderColumn dataField="name"> By</TableHeaderColumn>
         </BootstrapTable>
-        <div className="row">
-          <Button
-            className="col-2 mr-auto"
-            color="primary"
-            onClick={this.toggleAddModal}
-          >
-            {' '}Add{' '}
-          </Button>
+        <div className="row mt-3">
+          
 
           <Button
-            className="col-2 mr-auto"
+            className="col-2 ml-auto mr-auto"
             color="warning"
             onClick={this.handleRespondButtonClick}
           >
